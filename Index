@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>탐사대 작전 본부 · 빛 / 별과 우주 수준별 퀘스트</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--blue:#1a73e8;--red:#d93025;--yellow:#f9ab00;--green:#1e8e3e;--ink:#202124;--dim:#5f6368;--line:#dadce0;--bg:#f8f9fa;--card:#fff;--tc:#1a73e8;--tcbg:#e8f0fe}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:"Noto Sans KR",system-ui,-apple-system,"Malgun Gothic",sans-serif;color:var(--ink);background:var(--bg);line-height:1.6;word-break:keep-all}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer}
+header{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px;padding:10px 20px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:900;font-size:18px;background:none;border:0;padding:0}
+.dots{display:flex;gap:4px}.dots i{width:10px;height:10px;border-radius:50%;display:block}
+.dots i:nth-child(1){background:var(--blue)}.dots i:nth-child(2){background:var(--red)}.dots i:nth-child(3){background:var(--yellow)}.dots i:nth-child(4){background:var(--green)}
+.sp{flex:1}
+.switch{display:flex;align-items:center;gap:8px;border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 14px 6px 8px;font-size:14px;font-weight:500}
+.switch b{width:34px;height:20px;border-radius:999px;background:var(--line);position:relative;transition:.2s}
+.switch b::after{content:"";position:absolute;left:2px;top:2px;width:16px;height:16px;border-radius:50%;background:#fff;transition:.2s;box-shadow:0 1px 2px rgba(0,0,0,.3)}
+body.teacher .switch{border-color:var(--blue);color:var(--blue)}
+body.teacher .switch b{background:var(--blue)}body.teacher .switch b::after{left:16px}
+main{max-width:980px;margin:0 auto;padding:24px 16px 80px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:22px;margin-bottom:16px}
+h1{font-size:30px;line-height:1.25;margin:0 0 6px;font-weight:900}
+h2{font-size:20px;margin:0 0 10px}h3{font-size:16px;margin:0 0 8px}
+p{margin:0 0 10px}
+.eyebrow{font-size:13px;font-weight:700;color:var(--tc);letter-spacing:.04em;margin-bottom:4px}
+.dim{color:var(--dim);font-size:14px}
+.btn{border:0;background:var(--blue);color:#fff;border-radius:999px;padding:11px 24px;font-weight:700;font-size:15px;min-height:44px}
+.btn:disabled{background:var(--line);color:#9aa0a6;cursor:default}
+.btn.ghost{background:#fff;color:var(--blue);border:1px solid var(--line)}
+.btn.small{padding:6px 14px;font-size:13px;min-height:34px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.hero{display:grid;grid-template-columns:1.2fr 1fr;gap:20px;align-items:center}
+.codebox{background:var(--tcbg);border-radius:20px;padding:20px;text-align:center}
+.codebox input{width:100%;max-width:260px;text-align:center;font-size:34px;font-weight:900;letter-spacing:.35em;padding:10px 0 10px .35em;border:2px solid var(--line);border-radius:14px;background:#fff;text-transform:uppercase}
+.codebox input:focus{outline:0;border-color:var(--blue)}
+.err{color:var(--red);font-size:14px;font-weight:500;min-height:22px;margin-top:6px}
+.dex{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.dex div{border:1px dashed var(--line);border-radius:14px;padding:12px 10px;text-align:center;font-size:13px;color:#9aa0a6;min-height:84px;display:flex;flex-direction:column;justify-content:center;gap:2px}
+.dex div.on{border:1px solid var(--c);background:#fff;color:var(--ink)}
+.dex div b{font-size:14px}.dex div.on i{font-style:normal;color:var(--c);font-weight:700;font-size:12px}
+.decode{font-size:34px;font-weight:900;letter-spacing:.06em;text-align:center;padding:40px 10px;font-variant-numeric:tabular-nums}
+.steps{display:flex;gap:6px;margin:14px 0 18px}
+.steps span{flex:1;height:6px;border-radius:3px;background:var(--line)}.steps span.on{background:var(--tc)}
+.core{border-left:6px solid var(--tc);background:var(--tcbg);border-radius:14px;padding:14px 18px;font-weight:700;font-size:17px;margin-bottom:16px}
+.core small{display:block;font-size:12px;color:var(--tc);letter-spacing:.05em;margin-bottom:2px}
+.deck{border:2px solid var(--tc);border-radius:20px;padding:26px 22px;min-height:150px;display:flex;flex-direction:column;justify-content:center;font-size:20px;font-weight:700;text-align:center;background:#fff;animation:pop .25s}
+.deck small{font-size:12px;color:var(--tc);letter-spacing:.08em;margin-bottom:8px}
+@keyframes pop{from{transform:scale(.96);opacity:0}to{transform:none;opacity:1}}
+.pips{display:flex;gap:6px;justify-content:center;margin:12px 0}.pips i{width:8px;height:8px;border-radius:50%;background:var(--line)}.pips i.on{background:var(--tc)}
+.passage li{margin-bottom:6px}.passage{padding-left:20px;margin:0 0 6px}
+.term{color:var(--tc)}.gloss{color:var(--dim);font-size:.92em}
+.report{font-size:16px;line-height:1.85;border:1px solid var(--line);border-radius:14px;padding:18px;background:#fff}
+.report::before{content:"탐사 보고서 원문";display:block;font-size:12px;font-weight:700;color:var(--tc);letter-spacing:.08em;margin-bottom:6px}
+.mlist{list-style:none;margin:0 0 12px;padding:0;display:grid;gap:6px}
+.mlist li{border:1px solid var(--line);border-radius:12px;padding:9px 14px;font-size:15px;color:#9aa0a6;background:#fff}
+.mlist li.cur{border-color:var(--tc);color:var(--ink);font-weight:700;background:var(--tcbg)}
+.mlist li.ok{color:var(--green);border-color:#ceead6;background:#e6f4ea}
+.mlist li.ok::before{content:"완료 · ";font-weight:700}
+.simview{border-radius:16px;overflow:hidden;border:1px solid var(--line);background:#fff}
+.simview svg{display:block;width:100%;height:auto;touch-action:manipulation}
+.simview .pad{padding:12px 14px}
+.ctrl{display:grid;gap:10px;margin:12px 0}
+.ctrl label{display:grid;gap:2px;font-size:14px;font-weight:500}
+input[type=range]{width:100%;height:32px;accent-color:var(--tc)}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button,.tg{border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 16px;font-size:14px;font-weight:500;min-height:40px}
+.seg button.on,.tg.on{background:var(--tc);border-color:var(--tc);color:#fff}
+.judge{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.jmsg{font-size:14px;font-weight:500}.jmsg.bad{color:var(--red)}.jmsg.good{color:var(--green)}
+.read{font-weight:700;font-size:15px;padding:8px 14px;background:var(--bg);border-top:1px solid var(--line)}
+.items{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:10px 0;font-size:13px;color:var(--dim)}
+.chip{border:1px solid var(--tc);color:var(--tc);background:#fff;border-radius:999px;padding:4px 12px;font-size:13px;font-weight:700;animation:pop .3s}
+.chip.empty{border-style:dashed;border-color:#9aa0a6;color:#80868b;font-weight:400;animation:none}
+.pick{display:grid;gap:8px}
+.pick .it{border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:#fff;font-size:14px}
+.pick .it.ok{border-color:#ceead6;background:#e6f4ea}
+.pick .it .seg{margin-top:6px}
+.qz{border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:12px;background:#fff}
+.qz h3{font-size:17px}
+.qz .opts{display:grid;gap:8px}
+.qz .opts button{text-align:left;border:1px solid var(--line);background:#fff;border-radius:12px;padding:11px 14px;font-size:15px;min-height:46px}
+.qz .opts button.right{border-color:var(--green);background:#e6f4ea;font-weight:700}
+.qz .opts button.wrong{border-color:var(--red);background:#fce8e6;color:var(--red)}
+.qz .ex{margin-top:10px;font-size:14px;background:var(--bg);border-radius:10px;padding:10px 12px}
+.guard{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--red);margin-bottom:10px}
+.guard i{flex:1;height:10px;border-radius:5px;background:var(--red);transition:.4s}.guard i.off{background:var(--line)}
+details.ext{border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin-bottom:8px;background:#fff}
+details.ext summary{font-weight:700;cursor:pointer}
+details.ext p{margin:8px 0 0;font-size:14px;color:var(--dim)}
+.tag{display:inline-block;font-size:11px;font-weight:700;border-radius:6px;padding:1px 7px;background:#fef7e0;color:#b06000;margin-left:6px;vertical-align:middle}
+.badge{width:120px;height:120px;border-radius:50%;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;background:conic-gradient(var(--blue) 0 25%,var(--red) 0 50%,var(--yellow) 0 75%,var(--green) 0);animation:pop .5s}
+.badge span{width:98px;height:98px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:15px;text-align:center;padding:6px}
+/* teacher-only */
+.tnote,.tonly{display:none}
+body.teacher .tnote{display:block;border:1px dashed var(--blue);background:#e8f0fe;color:#174ea6;border-radius:10px;padding:8px 12px;font-size:13px;margin:8px 0}
+body.teacher .tnote b{font-weight:700}
+body.teacher .tonly{display:block}
+body.teacher .tag.tonly{display:inline-block}
+body.teacher .sonly{display:none}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.tabs button{border:0;background:none;padding:8px 14px;border-radius:999px;font-weight:700;font-size:14px;color:var(--dim)}
+.tabs button.on{background:#e8f0fe;color:var(--blue)}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{border-bottom:1px solid var(--line);padding:8px 8px;text-align:left;vertical-align:top}
+th{font-size:12px;color:var(--dim);font-weight:700}
+.tw{overflow-x:auto}
+.codebtn{border:1px solid var(--line);background:#fff;border-radius:10px;padding:6px 10px;font-size:13px;text-align:left;width:100%}
+.codebtn b{font-family:ui-monospace,Menlo,Consolas,monospace;color:var(--blue);letter-spacing:.08em}
+.cmp{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.cmp>div{border:1px solid var(--line);border-radius:14px;padding:12px;font-size:13px;background:#fff}
+.cmp h4{margin:10px 0 4px;font-size:12px;color:var(--dim)}.cmp ul,.cmp ol{margin:0;padding-left:18px}
+.lv{display:inline-block;border-radius:6px;padding:1px 8px;font-size:12px;font-weight:700;color:#fff;background:var(--dim)}
+pre.prompt{white-space:pre-wrap;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:14px;font:13px/1.7 "Noto Sans KR",sans-serif;margin:0 0 10px}
+dialog{border:0;border-radius:20px;padding:22px;max-width:520px;width:calc(100% - 32px)}
+dialog::backdrop{background:rgba(32,33,36,.5)}
+#toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,20px);background:var(--ink);color:#fff;padding:10px 20px;border-radius:999px;font-size:14px;font-weight:500;opacity:0;transition:.25s;pointer-events:none;z-index:50;max-width:90%}
+#toast.on{opacity:1;transform:translate(-50%,0)}
+.shake{animation:shake .3s}@keyframes shake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+@media (max-width:720px){.hero{grid-template-columns:1fr}.dex{grid-template-columns:repeat(3,1fr)}.cmp{grid-template-columns:1fr}h1{font-size:25px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header>
+  <button class="logo" id="goHome" type="button"><span class="dots" aria-hidden="true"><i></i><i></i><i></i><i></i></span>탐사대 작전 본부</button>
+  <span class="sp"></span>
+  <button class="switch" id="tSwitch" type="button" aria-pressed="false"><b></b>교사 해설</button>
+</header>
+<main id="app"></main>
+<dialog id="dlg"></dialog>
+<div id="toast" role="status"></div>
+
+<script>
+"use strict";
+/* ===================== 유틸 ===================== */
+const $=(q,el=document)=>el.querySelector(q), $$=(q,el=document)=>[...el.querySelectorAll(q)];
+const rad=d=>d*Math.PI/180, deg=r=>r*180/Math.PI, clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const clone=o=>JSON.parse(JSON.stringify(o));
+const gloss=t=>t.replace(/\{([^|}]+)\|([^}]+)\}/g,'<b class="term">$1</b><span class="gloss">($2)</span>');
+const plain=t=>t.replace(/\{([^|}]+)\|([^}]+)\}/g,'$1($2)');
+const Q=(q,o,ex)=>({q,o,ex});            // 정답은 항상 o[0], 화면에서 섞는다
+const COLORS=[['#1a73e8','#e8f0fe'],['#d93025','#fce8e6'],['#b06000','#fef7e0'],['#1e8e3e','#e6f4ea']];
+const LV={L:{n:'하',who:'기초학력 지원·다문화 학생',rule:'한 문장에 한 개념 · 일상 예시 · 핵심 용어 3개 이내 · 확인 문제 2개'},
+          M:{n:'중',who:'평균 수준 학생',rule:'문장을 짧게 나눔 · 핵심 용어에 괄호 풀이 · 예측 후 확인'},
+          H:{n:'상',who:'심화 학습자',rule:'원문 유지 · 생각을 확장하는 질문 2개 · 탐구 주제 제안'}};
+function toast(t){const e=$('#toast');e.textContent=t;e.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove('on'),2200)}
+const tnote=t=>`<div class="tnote"><b>교사 해설</b> · ${t}</div>`;
+
+/* ===================== 실험 장치 12종 ===================== */
+const R=(k,label,min,max,step)=>({k,label,min,max,step});
+const SVG=(inner,dark)=>`<svg viewBox="0 0 480 280" role="img" ${dark?'style="background:#202124"':'style="background:#f8f9fa"'}>${inner}</svg>`;
+const TXT=(x,y,t,o,fill,halo)=>`<text x="${x}" y="${y}" ${/font-size=/.test(o)?'':'font-size="13"'} font-weight="700" ${/fill=/.test(o)?'':`fill="${fill}"`} ${halo?'stroke="#f8f9fa" stroke-width="4" stroke-linejoin="round" paint-order="stroke"':''} ${o}>${t}</text>`;
+const TX=(x,y,t,o='')=>TXT(x,y,t,o,'#202124',1);
+const TW=(x,y,t,o='')=>TXT(x,y,t,o,'#fff',0);
+const LN=(x1,y1,x2,y2,c='#f9ab00',w=3,o='')=>`<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="${c}" stroke-width="${w}" stroke-linecap="round" ${o}/>`;
+const DASH='stroke-dasharray="5 5"';
+
+const DEV={plane:'평면거울',cvxM:'볼록 거울',ccvM:'오목 거울',cvxL:'볼록 렌즈',ccvL:'오목 렌즈'};
+const MIXN=['어두움','파란색','초록색','청록색','빨간색','자홍색','노란색','흰색'];
+const STAR_M=[0,2,5], STAR_N=['가','나','다'], DOFF={1:-5,4:-2,10:0,25:2,100:5};
+const TCLS=[[28000,'청색','#7fa8ff'],[10000,'청백색','#b9d0ff'],[7500,'백색','#ffffff'],[6000,'황백색','#fff3c4'],[5200,'황색','#ffe066'],[3500,'주황색','#ffa94d'],[0,'적색','#ff6b5b']];
+const GALC={
+ L:{cats:['성단','성운'],cards:[['별 수백 개가 무리 지어 모여 있다.','성단'],['가스와 티끌이 구름처럼 퍼져 있다.','성운'],['별 수십만 개가 공 모양으로 뭉쳐 있다.','성단'],['구름 같은 물질이 뒤쪽 별빛을 가려 검게 보인다.','성운']]},
+ M:{cats:['산개 성단','구상 성단'],cards:[['별들이 엉성하게 흩어져 모여 있다.','산개 성단'],['별들이 공 모양으로 빽빽하게 모여 있다.','구상 성단'],['주로 파란색을 띠는 별들로 이루어져 있다.','산개 성단'],['주로 붉은색을 띠는 별들로 이루어져 있다.','구상 성단'],['주로 우리은하의 나선팔에 분포한다.','산개 성단']]},
+ H:{cats:['방출 성운','반사 성운','암흑 성운'],cards:[['주변의 뜨거운 별에서 에너지를 받아 스스로 빛을 낸다.','방출 성운'],['주변의 별빛을 반사하여 밝게 보인다.','반사 성운'],['뒤쪽에서 오는 별빛을 가로막아 어둡게 보인다.','암흑 성운'],['오리온 대성운처럼 붉은빛으로 빛난다.','방출 성운']]}};
+const GAL=[[-40,5],[-5,-30],[30,15],[55,-20],[-20,35]], GALN=['가','나','다','라','마'];
+const EXPL={
+ devs:['인공위성','우주 탐사선','우주 망원경','우주 정거장'],
+ items:[['지구 주위를 돌며 날씨를 관측하고 통신을 연결한다.','인공위성'],['다른 행성까지 날아가 가까이에서 조사한다.','우주 탐사선'],['지구 대기 밖에서 먼 천체를 관측한다.','우주 망원경'],['우주인이 오래 머물며 실험한다.','우주 정거장']],
+ evs:[['허블 우주 망원경 발사',1990],['스푸트니크 1호 발사',1957],['다누리 발사',2022],['아폴로 11호 달 착륙',1969]]};
+const pickHTML=(cards,cats,done,pre)=>`<div class="pick">${cards.map((c,i)=>`<div class="it ${done[i]?'ok':''}">${c[0]}${done[i]?` <b>→ ${c[1]}</b>`:`<div class="seg">${cats.map((k,j)=>`<button type="button" data-act="${pre}:${i}:${j}">${k}</button>`).join('')}</div>`}</div>`).join('')}</div>`;
+
+const SIMS={
+/* ① 빛의 직진 */
+shadow:{
+ init:()=>({xo:260,xs:420,src:0}),
+ ctrl:lv=>[R('xo','물체의 위치 (광원 쪽 ↔ 스크린 쪽)',130,340,5),...(lv!=='L'?[R('xs','스크린의 위치',360,440,5)]:[]),...(lv==='H'?[R('src','광원의 크기',0,24,2)]:[])],
+ calc(s){const k=(s.xs-s.xo)/(s.xo-40);s.ratio=1+k;s.pen=16+(16+s.src)*k;s.umb=16+(16-s.src)*k},
+ draw(s){const cy=140,h=16,u=Math.max(s.umb,0);let o='';
+  o+=LN(40,cy-s.src,s.xs,cy-s.umb,'#f9ab00',2)+LN(40,cy+s.src,s.xs,cy+s.umb,'#f9ab00',2);
+  if(s.src>0)o+=LN(40,cy+s.src,s.xs,cy-s.pen,'#f9ab00',1.5,DASH)+LN(40,cy-s.src,s.xs,cy+s.pen,'#f9ab00',1.5,DASH);
+  o+=`<rect x="${s.xs}" y="20" width="8" height="240" fill="#dadce0"/>`;
+  if(s.src>0)o+=`<rect x="${s.xs}" y="${cy-s.pen}" width="8" height="${2*s.pen}" fill="#9aa0a6"/>`;
+  if(u>0)o+=`<rect x="${s.xs}" y="${cy-u}" width="8" height="${2*u}" fill="#202124"/>`;
+  o+=`<rect x="${s.xo-4}" y="${cy-h}" width="8" height="${2*h}" rx="2" fill="#1a73e8"/>`;
+  o+=s.src>0?`<rect x="34" y="${cy-s.src}" width="12" height="${2*s.src}" rx="5" fill="#f9ab00"/>`:`<circle cx="40" cy="${cy}" r="7" fill="#f9ab00"/>`;
+  o+=TX(22,cy+ (s.src>0?s.src+20:26),'광원')+TX(s.xo-14,cy+h+18,'물체')+TX(s.xs-26,16,'스크린');
+  const read=s.src>0?(s.umb>0?`본그림자(진한 부분)와 반그림자(흐린 부분)가 함께 생겼다`:`본그림자가 사라지고 반그림자만 남았다`):`그림자 크기: 물체의 ${s.ratio.toFixed(1)}배`;
+  return SVG(o)+`<div class="read">${read}</div>`}},
+/* ② 빛의 반사 */
+reflect:{
+ init:lv=>({i:45,rough:0,corner:lv==='H'?1:0,tg:null,seen:{}}),
+ ctrl:lv=>[lv==='H'?R('i','빛이 들어오는 각도 (입사각)',30,75,1):R('i','빛이 들어오는 각도 (입사각)',10,80,1),...(lv==='M'?[{k:'rough',label:'표면',opts:[[0,'매끄러운 표면'],[1,'거친 표면']]}]:[])],
+ calc(s){s.hit=s.tg!=null&&Math.abs(s.i-s.tg)<=1;s.seen[Math.round(s.i/5)]=1;s.nseen=Object.keys(s.seen).length},
+ draw(s,lv){const a=rad(s.i),L=170;let o='',read;
+  if(s.corner){const px=220,py=230,si=Math.sin(a),co=Math.cos(a),y2=py-100/Math.tan(a);
+   o+=`<rect x="120" y="230" width="320" height="8" fill="#9aa0a6"/><rect x="112" y="30" width="8" height="208" fill="#9aa0a6"/>`;
+   o+=LN(px+L*si,py-L*co,px,py)+LN(px,py,120,y2)+LN(120,y2,120+L*si,y2-L*co,'#d93025');
+   o+=LN(px,py,px,py-70,'#5f6368',1.5,DASH)+LN(120,y2,190,y2,'#5f6368',1.5,DASH);
+   o+=TX(300,60,'들어온 빛','fill="#b06000"')+TX(150,24,'나가는 빛','fill="#d93025"')+TX(250,262,'거울 1')+TX(52,140,'거울 2');
+   read=`입사각 ${s.i}° → 거울 2에서의 입사각 ${90-s.i}° · 나가는 빛은 들어온 빛과 나란하다 (확인한 각도 ${s.nseen}가지)`;
+  }else if(s.rough){const t=[-22,10,-8,20,-14];let z='M90,232';for(let x=90;x<=390;x+=20)z+=` L${x+10},${226+(x/20%2)*10} L${x+20},232`;
+   o+=`<path d="${z}" fill="none" stroke="#9aa0a6" stroke-width="5"/>`;
+   t.forEach((d,j)=>{const x=150+j*45,b=rad(clamp(s.i+2*d,-80,80));o+=LN(x-120*Math.sin(a),228-120*Math.cos(a),x,228,'#f9ab00',2)+LN(x,228,x+110*Math.sin(b),228-110*Math.cos(b),'#d93025',2)});
+   read='거친 표면: 빛이 여러 방향으로 반사된다 (난반사)';
+  }else{const cx=240,my=230;
+   o+=`<rect x="60" y="230" width="360" height="8" fill="#9aa0a6"/>`+LN(cx,my,cx,40,'#5f6368',1.5,DASH)+TX(cx-14,32,'법선','fill="#5f6368"');
+   if(s.tg!=null){const b=rad(s.tg);o+=`<circle cx="${cx+L*Math.sin(b)}" cy="${my-L*Math.cos(b)}" r="12" fill="${s.hit?'#1e8e3e':'#fff'}" stroke="#1e8e3e" stroke-width="3"/>`+TX(cx+L*Math.sin(b)-18,my-L*Math.cos(b)-18,'감지기','fill="#1e8e3e"')}
+   o+=LN(cx-L*Math.sin(a),my-L*Math.cos(a),cx,my)+LN(cx,my,cx+L*Math.sin(a),my-L*Math.cos(a),'#d93025');
+   o+=TX(cx-92,my-96,`입사각 ${s.i}°`,'fill="#b06000"')+TX(cx+26,my-96,`반사각 ${s.i}°`,'fill="#d93025"')+TX(70,262,'거울');
+   read=`입사각 ${s.i}° = 반사각 ${s.i}°`+(lv==='M'?` · 빛과 거울 면 사이의 각 ${90-s.i}°`:'')+(s.tg!=null?(s.hit?' · 감지기 명중':' · 감지기를 조준하라'):'');}
+  return SVG(o)+`<div class="read">${read}</div>`}},
+/* ③ 빛의 굴절 */
+refract:{
+ init:()=>({i:20,n:1.33,rev:0,tg:null}),
+ ctrl:lv=>[R('i','빛을 비추는 각도 (입사각)',5,70,1),...(lv==='M'?[{k:'n',label:'아래쪽 물질',opts:[[1.33,'물'],[1.5,'유리']]}]:[]),...(lv==='H'?[{k:'rev',label:'빛의 진행 방향',opts:[[0,'공기 → 물'],[1,'물 → 공기']]}]:[])],
+ calc(s){const a=rad(s.i);s.tir=false;
+  if(!s.rev){s.xs=60+90*Math.tan(a);s.r=deg(Math.asin(Math.sin(a)/s.n));s.xb=s.xs+140*Math.tan(rad(s.r));s.hit=s.tg!=null&&Math.abs(s.xb-s.tg)<9}
+  else{s.xs=60+140*Math.tan(a);const q=s.n*Math.sin(a);if(q>=1){s.tir=true;s.r=90}else s.r=deg(Math.asin(q));s.hit=false}},
+ draw(s,lv){const a=rad(s.i),r=rad(s.r),med=s.n>1.4?'유리':'물';let o=`<rect x="0" y="120" width="480" height="160" fill="${s.n>1.4?'#e6f4ea':'#d2e3fc'}"/>`+LN(0,120,480,120,'#1a73e8',2);
+  o+=TX(410,110,'공기')+TX(418,140,med,'fill="#174ea6"')+LN(s.xs,60,s.xs,190,'#5f6368',1.5,DASH);
+  if(!s.rev){o+=LN(s.xs,120,s.xs+140*Math.tan(a),260,'#9aa0a6',1.5,DASH)+LN(60,30,s.xs,120)+LN(s.xs,120,s.xb,260,'#d93025');
+   o+=`<circle cx="60" cy="30" r="8" fill="#f9ab00"/>`;
+   if(s.tg!=null){if(lv==='L')o+=`<path d="M${s.tg},213 l9,9 l-9,9 l-9,-9z" fill="none" stroke="#9aa0a6" stroke-width="2" ${DASH}/>`+TX(s.tg+14,226,'떠 보이는 위치','fill="#5f6368" font-weight="400"');
+    o+=`<path d="M${s.tg},246 l11,11 l-11,11 l-11,-11z" fill="${s.hit?'#1e8e3e':'#fff'}" stroke="#1e8e3e" stroke-width="3"/>`}
+  }else{o+=LN(60,260,s.xs,120)+`<circle cx="60" cy="260" r="8" fill="#f9ab00"/>`;
+   if(s.tir)o+=LN(s.xs,120,s.xs+140*Math.tan(a),260,'#d93025')+TX(s.xs-10,104,'전반사','fill="#d93025"');
+   else o+=LN(s.xs,120,s.xs+100*Math.tan(r),20,'#d93025');}
+  const read=s.tir?`입사각 ${s.i}° · 빛이 물 밖으로 나가지 못하고 모두 반사된다`:(lv==='L'?(s.tg!=null?(s.hit?'보석 명중':'꺾인 빛이 보석에 닿도록 조준하라'):'빛이 경계면에서 꺾인다'):`입사각 ${s.i}° · 굴절각 ${s.r.toFixed(0)}°`+(s.rev?' (굴절각이 더 크다)':' (굴절각이 더 작다)'));
+  return SVG(o)+`<div class="read">${read}</div>`}},
+/* ④ 거울과 렌즈의 상 */
+lens:{
+ init:()=>({dev:'plane',d:0.5,tried:{}}),
+ ctrl:()=>[{k:'dev',label:'장비',opts:Object.entries(DEV)},R('d','물체까지의 거리 (가까이 ↔ 멀리)',0.2,3,0.05)],
+ calc(s){const conv=s.dev==='cvxL'||s.dev==='ccvM',div=s.dev==='ccvL'||s.dev==='cvxM';s.blur=conv&&Math.abs(s.d-1)<0.08;
+  s.m=s.blur?9:conv?1/(1-s.d):div?1/(1+s.d):1;s.up=s.m>0;s.big=Math.abs(s.m)>1.05;s.small=Math.abs(s.m)<0.95;s.tried[s.dev]=1},
+ draw(s,lv){const fig=`<path d="M0,22 L0,-22 M0,-22 L14,-15 L0,-8" fill="none" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>`;
+  const isM=s.dev.endsWith('M')||s.dev==='plane',sc=clamp(Math.abs(s.m),.25,2.6);
+  const shape={plane:'M0,-60 L0,60',cvxM:'M-10,-60 Q16,0 -10,60',ccvM:'M10,-60 Q-16,0 10,60',cvxL:'M0,-60 Q22,0 0,60 Q-22,0 0,-60',ccvL:'M-12,-60 L12,-60 Q0,0 12,60 L-12,60 Q0,0 -12,-60'}[s.dev];
+  let o=TX(40,36,'물체')+`<g transform="translate(70,140)" stroke="#1a73e8">${fig}</g>`;
+  o+=`<g transform="translate(190,140)"><path d="${shape}" fill="${isM?'none':'#d2e3fc'}" stroke="#5f6368" stroke-width="${isM?6:2}"/></g>`+TX(160,232,DEV[s.dev]);
+  o+=`<rect x="280" y="40" width="170" height="200" rx="14" fill="#fff" stroke="#dadce0"/>`+TX(296,34,'보이는 상');
+  o+=`<g transform="translate(365,140) scale(${sc}) ${s.up?(isM?'scale(-1,1)':''):'rotate(180)'}" stroke="#d93025" ${s.blur?'opacity=".15"':''}>${fig}</g>`;
+  const read=s.blur?'상이 한없이 커지다가 흐려져 보이지 않는다 (상이 뒤집히는 경계)':`상: ${s.big?'물체보다 크고':s.small?'물체보다 작고':'물체와 크기가 같고'} ${s.up?'바로 선 상':'거꾸로 선 상'}`+(lv==='H'&&(s.dev==='cvxL'||s.dev==='ccvM')?` · 물체 거리 = 초점 거리의 ${s.d.toFixed(2)}배`:'');
+  return SVG(o)+`<div class="read">${read}</div>`}},
+/* ⑤ 빛의 합성 */
+color:{
+ init:lv=>({r:0,g:0,b:0,shadow:lv==='H'?1:0,zoom:lv==='M'?1:0}),
+ ctrl:()=>[{tgs:[['r','빨간색 조명'],['g','초록색 조명'],['b','파란색 조명']],label:'조명 스위치'}],
+ calc(s){s.name=MIXN[(s.r?4:0)+(s.g?2:0)+(s.b?1:0)]},
+ draw(s){const mix=(r,g,b)=>`rgb(${r?255:0},${g?255:0},${b?255:0})`,nm=(r,g,b)=>MIXN[(r?4:0)+(g?2:0)+(b?1:0)];let o='';
+  if(s.shadow){o+=`<rect x="60" y="36" width="360" height="164" rx="8" fill="${mix(s.r,s.g,s.b)}" stroke="#5f6368"/>`;
+   const sh=[['r',150,0,s.g,s.b],['g',225,s.r,0,s.b],['b',300,s.r,s.g,0]];
+   sh.forEach(([k,x,r,g,b])=>{if(s[k]){o+=`<rect x="${x}" y="60" width="36" height="140" fill="${mix(r,g,b)}" stroke="#5f6368"/>`+TW(x+18,26,nm(r,g,b),'font-size="12" text-anchor="middle"')+LN(x+18,30,x+18,58,'#9aa0a6',1)}});
+   o+=`<rect x="237" y="150" width="12" height="92" fill="#9aa0a6" stroke="#202124"/>`;
+   [['r',120,'#ff5546','빨강'],['g',240,'#3ddc84','초록'],['b',360,'#5c9dff','파랑']].forEach(([k,x,c,n])=>{o+=`<circle cx="${480-x}" cy="262" r="9" fill="${s[k]?c:'#5f6368'}"/>`+TW(480-x+14,267,n+(s[k]?' 켜짐':' 꺼짐'),'font-size="11"')});
+   return SVG(o,1)+`<div class="read">스크린의 색: ${s.name} · 그림자마다 적힌 색 이름을 확인하라</div>`}
+  const c=[[s.r,200,115,'#ff0000'],[s.g,280,115,'#00ff00'],[s.b,240,180,'#0000ff']];
+  o+=`<g style="isolation:isolate">`+c.map(([on,x,y,f])=>on?`<circle cx="${x}" cy="${y}" r="78" fill="${f}" style="mix-blend-mode:screen"/>`:`<circle cx="${x}" cy="${y}" r="78" fill="none" stroke="#5f6368" ${DASH}/>`).join('')+`</g>`;
+  o+=TW(150,60,'빨간색'+(s.r?'':' (꺼짐)'))+TW(290,60,'초록색'+(s.g?'':' (꺼짐)'))+TW(215,270,'파란색'+(s.b?'':' (꺼짐)'));
+  if(s.r&&s.g)o+=TX(222,100,'노란색');if(s.g&&s.b)o+=TX(268,165,'청록색');if(s.r&&s.b)o+=TW(178,165,'자홍색');if(s.r&&s.g&&s.b)o+=TX(226,140,'흰색');
+  if(s.zoom){o+=`<rect x="380" y="20" width="86" height="96" rx="10" fill="#000" stroke="#9aa0a6"/>`+TW(384,132,'화면 확대','font-size="11"');
+   [['r','#ff0000'],['g','#00ff00'],['b','#0000ff']].forEach(([k,f],j)=>{o+=`<rect x="${392+j*22}" y="32" width="16" height="72" rx="3" fill="${s[k]?f:'#2d2f33'}"/>`})}
+  return SVG(o,1)+`<div class="read">합성된 빛의 색: ${s.name}</div>`}},
+/* ⑥ 연주 시차 */
+parallax:{
+ init:()=>({d:6}),
+ ctrl:()=>[R('d','별까지의 거리 (가까이 ↔ 멀리)',1,10,1)],
+ calc(s){s.p=1/s.d;s.pp=2/s.d},
+ draw(s,lv){const ys=232-s.d*14,sh=s.p*70;let o=`<rect x="0" y="0" width="480" height="56" fill="#2d2f33"/>`+TW(10,16,'6개월 간격으로 본 하늘','font-size="11"');
+  [40,95,150,205,275,330,385,440].forEach((x,j)=>o+=`<circle cx="${x}" cy="${22+(j*13)%24}" r="1.6" fill="#9aa0a6"/>`);
+  o+=`<circle cx="${240-sh}" cy="38" r="5" fill="#fbbc04"/><circle cx="${240+sh}" cy="38" r="5" fill="none" stroke="#fbbc04" stroke-width="2"/>`+LN(240-sh,50,240+sh,50,'#fff',1.5);
+  o+=`<ellipse cx="240" cy="252" rx="90" ry="14" fill="none" stroke="#5f6368" ${DASH}/><circle cx="240" cy="252" r="9" fill="#f9ab00"/>`+TW(228,276,'태양','font-size="11"');
+  o+=LN(150,252,240,ys,'#8ab4f8',1.5)+LN(330,252,240,ys,'#8ab4f8',1.5)+LN(240,252,240,ys,'#5f6368',1,DASH);
+  o+=`<circle cx="150" cy="252" r="6" fill="#8ab4f8"/><circle cx="330" cy="252" r="6" fill="#8ab4f8"/>`+TW(96,244,'지구(1월)','font-size="11"')+TW(340,244,'지구(7월)','font-size="11"');
+  o+=`<circle cx="240" cy="${ys}" r="7" fill="#fbbc04"/>`+TW(254,ys+4,'별');
+  return SVG(o,1)+`<div class="read">6개월 간격 시차 ${s.pp.toFixed(2)}″ · 연주 시차 ${s.p.toFixed(2)}″${lv==='H'?` · 거리 ${s.d} pc`:''}<br><span class="dim" style="font-weight:400">그림의 각도와 거리는 실제보다 크게 과장하여 나타냈다.</span></div>`}},
+/* ⑦ 거리와 밝기 */
+bright:{
+ init:()=>({d:1}),
+ ctrl:()=>[{k:'d',label:'광원으로부터의 거리',opts:[1,2,3,4,5].map(v=>[v,v+'배'])}],
+ calc(s){s.n=s.d*s.d},
+ draw(s){const x=40+70*s.d,c=16,h=c*s.d,y0=140-h/2;let o=`<path d="M40,140 L${x},${y0} L${x},${y0+h}z" fill="#fef7e0"/>`+LN(40,140,x,y0,'#f9ab00',1.5)+LN(40,140,x,y0+h,'#f9ab00',1.5);
+  for(let i=0;i<s.d;i++)for(let j=0;j<s.d;j++)o+=`<rect x="${x+i*c}" y="${y0+j*c}" width="${c}" height="${c}" fill="#f9ab00" fill-opacity="${(.12+.88/s.n).toFixed(2)}" stroke="#b06000"/>`;
+  o+=`<circle cx="40" cy="140" r="9" fill="#f9ab00"/>`+TX(24,172,'광원');
+  for(let k=1;k<=5;k++)o+=LN(40+70*k,256,40+70*k,264,'#5f6368',1.5)+TX(34+70*k,278,k+'배','font-size="11" fill="#5f6368"');
+  return SVG(o)+`<div class="read">빛이 퍼진 넓이: ${s.n}칸 · 한 칸의 밝기: ${s.n===1?'1':'1/'+s.n}</div>`}},
+/* ⑧ 별의 등급 */
+mag:{
+ init:()=>({sel:0,d:[100,10,1]}),
+ ctrl:()=>[],
+ calc(s){s.m=s.d.map((d,i)=>STAR_M[i]+DOFF[d]);s.all10=s.d.every(d=>d===10)},
+ act(s,a){const[k,v]=a.split(':');if(k==='sel')s.sel=+v;else if(k==='d')s.d[s.sel]=+v;else if(k==='all')s.d=[10,10,10]},
+ draw(s){const X={1:110,4:180,10:250,25:330,100:420};let o=`<circle cx="36" cy="140" r="16" fill="#8ab4f8"/>`+TW(22,176,'지구','font-size="11"')+LN(250,24,250,256,'#34a853',1.5,DASH)+TW(222,18,'10 pc 출발선','font-size="11" fill="#81c995"');
+  Object.entries(X).forEach(([d,x])=>o+=TW(x-14,274,d+' pc','font-size="10" fill="#9aa0a6"'));
+  s.d.forEach((d,i)=>{const y=70+i*70,r=clamp(15-2.3*s.m[i],2.5,17);o+=LN(60,y,450,y,'#3c4043',1)+`<circle cx="${X[d]}" cy="${y}" r="${r}" fill="#fff8d6" ${s.sel===i?'stroke="#fbbc04" stroke-width="3"':''}/>`+TW(X[d]+r+6,y-8,'별 '+STAR_N[i])});
+  let h=SVG(o,1)+`<div class="pad"><div class="seg">${STAR_N.map((n,i)=>`<button type="button" class="${s.sel===i?'on':''}" data-act="sel:${i}">별 ${n} 고르기</button>`).join('')}</div>
+  <div class="seg" style="margin-top:8px">${[1,4,10,25,100].map(d=>`<button type="button" class="${s.d[s.sel]===d?'on':''}" data-act="d:${d}">${d} pc</button>`).join('')}<button type="button" data-act="all">모두 10 pc 출발선에 세우기</button></div>
+  <div class="tw"><table style="margin-top:10px"><tr><th>별</th><th>거리</th><th>겉보기 등급</th><th>절대 등급</th></tr>${s.d.map((d,i)=>`<tr><td>별 ${STAR_N[i]}</td><td>${d} pc</td><td><b>${s.m[i]}등급</b></td><td>${STAR_M[i]}등급</td></tr>`).join('')}</table></div></div>`;
+  return h}},
+/* ⑨ 표면 온도와 색 */
+temp:{
+ init:()=>({t:30,seen:{}}),
+ ctrl:()=>[R('t','표면 온도 (낮음 ↔ 높음)',0,100,1)],
+ calc(s){s.T=Math.round(2500*Math.pow(14,s.t/100)/100)*100;const c=TCLS.find(c=>s.T>=c[0]);s.name=c[1];s.hex=c[2];s.seen[s.name]=1},
+ draw(s){let o=`<defs><radialGradient id="tg"><stop offset="55%" stop-color="${s.hex}"/><stop offset="100%" stop-color="${s.hex}" stop-opacity="0"/></radialGradient></defs><circle cx="240" cy="118" r="96" fill="url(#tg)"/>`;
+  o+=`<text x="240" y="124" text-anchor="middle" font-size="18" font-weight="900" fill="#202124">${s.name}</text>`;
+  [...TCLS].reverse().forEach((c,j)=>{o+=`<rect x="${34+j*60}" y="236" width="52" height="14" rx="4" fill="${c[2]}" ${c[1]===s.name?'stroke="#fff" stroke-width="3"':''}/>`+TW(60+j*60,268,c[1],'font-size="11" text-anchor="middle"')});
+  o+=TW(30,228,'← 온도 낮음','font-size="11" fill="#9aa0a6"')+TW(378,228,'온도 높음 →','font-size="11" fill="#9aa0a6"');
+  return SVG(o,1)+`<div class="read">표면 온도 약 ${s.T.toLocaleString()} K · 별의 색: ${s.name}</div>`}},
+/* ⑩ 우리은하 */
+galaxy:{
+ init:()=>({pin:null,cls:{},msg:''}),
+ ctrl:()=>[],
+ calc(s,lv){if(s.pin){s.dist=Math.hypot(s.pin.x-240,s.pin.y-140);s.ly=s.dist/120*5;s.pinOk=s.dist>=54&&s.dist<=90}else s.pinOk=false;s.clsDone=GALC[lv].cards.every((c,i)=>s.cls[i])},
+ tap(s,x,y){s.pin={x,y}},
+ act(s,a,lv){const[,i,j]=a.split(':'),g=GALC[lv];if(g.cats[+j]===g.cards[+i][1]){s.cls[+i]=1;s.msg=''}else s.msg='단서를 다시 읽어 보라. 분류가 맞지 않는다.'},
+ draw(s,lv){let arms='';for(let k=0;k<2;k++){let p='';for(let t=0;t<=4.6;t+=.15){const r=18+22*t,a=t+k*Math.PI;p+=(t?'L':'M')+(240+r*Math.cos(a)).toFixed(1)+','+(140+r*Math.sin(a)*.95).toFixed(1)}arms+=`<path d="${p}" fill="none" stroke="#8ab4f8" stroke-width="16" stroke-linecap="round" opacity=".45"/>`}
+  let o=`<circle cx="240" cy="140" r="120" fill="#2d2f33"/>`+arms+`<ellipse cx="240" cy="140" rx="34" ry="16" fill="#fde293" transform="rotate(-25 240 140)"/>`+TW(214,144,'은하 중심','font-size="11" fill="#202124"');
+  o+=LN(240,268,360,268,'#9aa0a6',1.5)+TW(262,262,'5만 광년','font-size="11" fill="#9aa0a6"');
+  if(s.pin)o+=`<circle cx="${s.pin.x}" cy="${s.pin.y}" r="7" fill="${s.pinOk?'#34a853':'#ea4335'}" stroke="#fff" stroke-width="2"/>`+TW(s.pin.x+10,s.pin.y-8,'태양계?','font-size="11"');
+  const g=GALC[lv],read=s.pin?`내가 찍은 위치: 은하 중심에서 약 ${s.ly.toFixed(1)}만 광년 · ${s.pinOk?'태양계의 위치와 일치한다':s.dist<54?'너무 중심에 가깝다':'너무 바깥쪽이다'}`:'은하 지도를 눌러 태양계의 위치에 핀을 꽂아라';
+  return `<svg viewBox="0 0 480 280" data-tap style="background:#202124;cursor:crosshair">${o}</svg><div class="read">${read}</div><div class="pad"><h3>천체 분류 카드</h3>${pickHTML(g.cards,g.cats,s.cls,'c')}${s.msg?`<p class="jmsg bad" style="margin-top:8px">${s.msg}</p>`:''}</div>`}},
+/* ⑪ 팽창하는 우주 */
+expand:{
+ init:()=>({k:1,v:0}),
+ ctrl:lv=>[R('k',lv==='H'?'우주의 크기 (과거 ↔ 현재 ↔ 미래)':'우주의 크기 (팽창시키기)',lv==='H'?0.1:1,2,0.05)],
+ calc(s){s.rows=GAL.map((g,i)=>({i,b:Math.hypot(g[0]-GAL[s.v][0],g[1]-GAL[s.v][1])/10})).filter(r=>r.i!==s.v).sort((a,b)=>a.b-b.b)},
+ act(s,a){s.v=+a.split(':')[1]},
+ draw(s){let o='';const sp=30*s.k;if(sp>4)for(let x=240%sp;x<480;x+=sp)o+=LN(x,0,x,280,'#3c4043',1);if(sp>4)for(let y=140%sp;y<280;y+=sp)o+=LN(0,y,480,y,'#3c4043',1);
+  GAL.forEach((g,i)=>{const x=240+(g[0]-GAL[s.v][0])*s.k,y=140+(g[1]-GAL[s.v][1])*s.k;
+   o+=`<g data-act="v:${i}" style="cursor:pointer"><circle cx="${x}" cy="${y}" r="16" fill="transparent"/><ellipse cx="${x}" cy="${y}" rx="9" ry="5" fill="${i===s.v?'#fbbc04':'#8ab4f8'}" transform="rotate(-20 ${x} ${y})"/>`+TW(x+10,y-8,'은하 '+GALN[i]+(i===s.v?' (기준)':''),'font-size="11"')+`</g>`});
+  return SVG(o,1)+`<div class="pad"><p class="dim">은하를 누르면 그 은하가 기준(관측자)이 된다. 은하 자체의 크기는 변하지 않는다.</p><div class="tw"><table><tr><th>은하 ${GALN[s.v]}에서 본</th><th>처음 거리</th><th>지금 거리</th><th>달라진 거리</th></tr>${s.rows.map(r=>`<tr><td>은하 ${GALN[r.i]}</td><td>${r.b.toFixed(1)}칸</td><td><b>${(r.b*s.k).toFixed(1)}칸</b></td><td>${(r.b*(s.k-1)>=0?'+':'')+(r.b*(s.k-1)).toFixed(1)}칸</td></tr>`).join('')}</table></div></div>`}},
+/* ⑫ 우주 탐사 */
+explore:{
+ init:()=>({pk:{},ord:[],hits:0,msg:''}),
+ ctrl:()=>[],
+ calc(s){s.npk=Object.keys(s.pk).length;s.n=6*Math.pow(3,Math.min(s.hits,3))},
+ act(s,a){const p=a.split(':');s.msg='';
+  if(p[0]==='pk'){if(EXPL.devs[+p[2]]===EXPL.items[+p[1]][1])s.pk[+p[1]]=1;else s.msg='임무와 장비가 맞지 않는다. 다시 골라 보라.'}
+  else if(p[0]==='ev'){const left=EXPL.evs.map((e,i)=>i).filter(i=>!s.ord.includes(i)),first=left.sort((a,b)=>EXPL.evs[a][1]-EXPL.evs[b][1])[0];if(+p[1]===first)s.ord.push(first);else s.msg='그보다 먼저 일어난 사건이 있다.'}
+  else if(p[0]==='hit')s.hits++},
+ draw(s,lv){const m=s.msg?`<p class="jmsg bad" style="margin-top:8px">${s.msg}</p>`:'';
+  if(lv==='L')return `<div class="pad"><h3>임무 카드에 맞는 탐사 장비를 골라라</h3>${pickHTML(EXPL.items,EXPL.devs,s.pk,'pk')}${m}</div>`;
+  if(lv==='M')return `<div class="pad"><h3>먼저 일어난 사건부터 차례로 눌러라</h3><div class="seg">${EXPL.evs.map((e,i)=>s.ord.includes(i)?'':`<button type="button" data-act="ev:${i}">${e[0]}</button>`).join('')}</div>${m}<ol style="margin:12px 0 0;padding-left:22px">${s.ord.map(i=>`<li><b>${EXPL.evs[i][1]}년</b> · ${EXPL.evs[i][0]}</li>`).join('')}</ol></div>`;
+  let o=`<circle cx="240" cy="140" r="44" fill="#1a73e8"/>`+TW(226,145,'지구')+`<circle cx="240" cy="140" r="96" fill="none" stroke="#5f6368" ${DASH}/><g><animateTransform attributeName="transform" type="rotate" from="0 240 140" to="360 240 140" dur="24s" repeatCount="indefinite"/>`;
+  for(let i=0;i<s.n;i++){const a=i*2.399,r=84+(i*37%26);o+=`<rect x="${240+r*Math.cos(a)-2}" y="${140+r*Math.sin(a)-2}" width="4" height="4" fill="${i<6?'#fbbc04':'#ea4335'}"/>`}
+  o+=`</g>`;
+  return SVG(o,1)+`<div class="read">궤도 위의 우주 쓰레기 조각: ${s.n}개 · 충돌 위험: ${['낮음','높음','매우 높음','매우 높음'][Math.min(s.hits,3)]}</div><div class="pad"><button type="button" class="btn small" data-act="hit">충돌 실험</button> <span class="dim">조각끼리 충돌하면 어떤 일이 생기는지 확인하라.</span></div>`}}
+};
+
+/* ===================== 12개 주제 · 36개 퀘스트 ===================== */
+const A=(sim,...acts)=>(s,lv)=>acts.forEach(a=>sim.act(s,a,lv));   // 풀이 가능 여부 점검용
+const galSol=(pin,lv)=>s=>{if(pin)s.pin={x:312,y:140};else GALC[lv].cards.forEach((c,i)=>s.cls[i]=1)};
+const TOPICS=[
+{id:1,zone:'빛',title:'빛의 직진',badge:'직진의 눈',sim:'shadow',
+ core:'빛은 한 물질 안에서 곧게 나아간다. 그래서 빛이 물체에 막히면 그 뒤에 그림자가 생긴다.',
+ warn:'그림자 크기는 광원·물체·스크린 사이의 거리 비로 정해진다. "가까우면 크다"만 외우지 않도록 스크린 위치도 함께 다룬다.',
+ gl:[['광원','light source','光源'],['빛의 직진','rectilinear propagation of light','光的直线传播'],['그림자','shadow','影子'],['본그림자','umbra','本影'],['반그림자','penumbra','半影'],['바늘구멍 사진기','pinhole camera','针孔照相机']],
+ L:{op:'그림자 사냥',code:'K7QM',terms:[0,1,2],
+  cards:['스스로 빛을 내는 물체를 광원이라고 한다.','광원에서 나온 빛은 곧게 나아간다. 이것이 빛의 직진이다.','빛이 물체에 막히면 뒤쪽에 어두운 그림자가 생긴다.','손전등 앞에 손을 가까이 대면 벽에 비친 손 그림자가 커진다.'],
+  ms:[{t:'그림자를 물체의 2배 크기로 만들어라.',ok:s=>Math.abs(s.ratio-2)<.08,sol:{xo:230}},{t:'그림자를 물체의 3배 크기로 키워라.',ok:s=>Math.abs(s.ratio-3)<.08,sol:{xo:165}},{t:'이번에는 1.5배로 줄여라.',ok:s=>Math.abs(s.ratio-1.5)<.08,sol:{xo:295}}],
+  quiz:[Q('빛은 어떻게 나아갈까?',['곧게 나아간다','물체를 돌아서 나아간다','제자리에 멈춰 있다'],'빛은 곧게 나아간다. 이것을 빛의 직진이라고 한다.'),Q('물체를 손전등에 가까이 하면 그림자는?',['커진다','작아진다','사라진다'],'물체가 광원에 가까울수록 더 많은 빛을 가려 그림자가 커진다.')]},
+ M:{op:'어둠의 설계도',code:'R3XD',
+  text:['{광원|스스로 빛을 내는 물체}에서 나온 빛은 사방으로 곧게 나아간다.','이러한 성질을 {빛의 직진|빛이 곧게 나아가는 것}이라고 한다.','빛은 불투명한 물체를 통과하지 못한다.','그래서 물체 뒤쪽에 빛이 닿지 않는 그림자가 생긴다.','물체가 광원에 가까울수록, 스크린이 멀수록 그림자는 커진다.'],
+  pre:Q('물체를 광원 쪽으로 옮기면 그림자의 크기는 어떻게 될까?',['커진다','작아진다','변하지 않는다'],'물체가 광원에 가까워지면 더 넓은 범위의 빛을 가린다.'),
+  ms:[{t:'그림자를 물체의 2.5배 크기로 설계하라.',ok:s=>Math.abs(s.ratio-2.5)<.08,sol:{xs:420,xo:190}},{t:'스크린을 가장 멀리 두고, 그림자를 3배 이상으로 키워라.',ok:s=>s.xs>=440&&s.ratio>=3,sol:{xs:440,xo:170}}],
+  quiz:[Q('그림자가 생기는 까닭은?',['빛이 직진하다가 물체에 막히기 때문이다','빛이 물체를 돌아서 가기 때문이다','물체가 어두운 빛을 내기 때문이다'],'빛은 직진하므로 불투명한 물체 뒤쪽에는 닿지 못한다.'),Q('그림자를 더 크게 만드는 방법을 옳게 짝 지은 것은?',['물체를 광원 가까이, 스크린을 멀리','물체를 광원에서 멀리, 스크린을 멀리','물체를 광원 가까이, 스크린을 가까이'],'물체는 광원에 가까울수록, 스크린은 멀수록 그림자가 커진다.')]},
+ H:{op:'바늘구멍 미스터리',code:'W9TB',
+  text:'광원에서 나온 빛은 한 물질 안에서 직진한다. 빛이 불투명한 물체를 만나면 물체 뒤쪽에는 빛이 도달하지 못하는 그림자가 생긴다. 광원이 점처럼 작으면 그림자의 경계가 뚜렷하지만, 광원이 넓으면 빛이 전혀 닿지 않는 본그림자와 일부만 닿는 반그림자가 함께 생겨 경계가 흐려진다. 바늘구멍 사진기에서는 물체의 위쪽에서 나온 빛이 구멍을 지나 스크린의 아래쪽에, 아래쪽에서 나온 빛이 위쪽에 도달하므로 상이 거꾸로 맺힌다. 이 또한 빛이 직진한다는 증거이다.',
+  ms:[{t:'광원을 키워 반그림자가 생기게 하라.',ok:s=>s.src>=10&&s.umb>0,sol:{src:12,xo:260,xs:420}},{t:'본그림자가 완전히 사라지는 배치를 찾아라.',ok:s=>s.umb<=0,sol:{src:24,xo:130,xs:420}}],
+  ext:[{q:'광원이 넓어지면 그림자의 가장자리가 흐려지는 까닭은 무엇일까?',g:'광원의 한쪽 끝에서 나온 빛은 막히지만 다른 쪽 끝에서 나온 빛은 닿는 곳을 찾아보자. 실험 장치에서 광원의 크기를 키우며 확인할 수 있다.'},{q:'일식 때 어떤 지역에서는 개기 일식이, 다른 지역에서는 부분 일식이 보이는 까닭은?',g:'달의 본그림자 안에 있는 관측자와 반그림자 안에 있는 관측자를 각각 떠올려 보자.'}],
+  inq:'종이 상자와 기름종이로 바늘구멍 사진기를 만들고, 구멍의 크기와 상의 밝기·선명도 사이의 관계를 조사해 보자.',
+  quiz:[Q('바늘구멍 사진기의 상이 거꾸로 맺히는 까닭은?',['물체의 위에서 나온 빛은 직진하여 스크린의 아래에 닿기 때문이다','구멍이 빛을 굴절시키기 때문이다','스크린이 빛을 반사하기 때문이다'],'빛이 직진하므로 구멍을 지나며 위아래와 좌우가 서로 엇갈린다.'),Q('바늘구멍 사진기의 구멍을 크게 하면 상은?',['밝아지지만 흐려진다','어두워지고 선명해진다','변하지 않는다'],'구멍이 크면 들어오는 빛은 많아지지만 한 점에서 나온 빛이 넓게 퍼져 닿는다.')]}},
+{id:2,zone:'빛',title:'빛의 반사',badge:'반사 명사수',sim:'reflect',
+ core:'빛이 물체의 표면에서 반사될 때, 입사각과 반사각의 크기는 항상 같다.',
+ warn:'입사각과 반사각은 거울 면이 아니라 법선을 기준으로 잰다. 화면에서 법선을 항상 점선으로 보여 준다. 난반사에서도 반사 법칙은 성립한다.',
+ gl:[['법선','normal (line)','法线'],['입사각','angle of incidence','入射角'],['반사각','angle of reflection','反射角'],['반사','reflection','反射'],['정반사','specular reflection','镜面反射'],['난반사','diffuse reflection','漫反射']],
+ L:{op:'레이저 당구',code:'H4NP',terms:[0,1,2],
+  cards:['빛이 거울에 부딪혀 되돌아 나오는 것을 반사라고 한다.','거울 면에 수직으로 세운 기준선을 법선이라고 한다.','법선과 들어오는 빛 사이의 각이 입사각이다.','법선과 반사된 빛 사이의 각이 반사각이다.','입사각과 반사각의 크기는 항상 같다. 당구공이 벽에 맞고 튕겨 나오는 모습과 닮았다.'],
+  ms:[{t:'반사된 빛으로 감지기를 맞혀라.',set:{tg:30},ok:s=>s.hit,sol:{i:30}},{t:'감지기가 이동했다. 다시 맞혀라.',set:{tg:60},ok:s=>s.hit,sol:{i:60}},{t:'마지막 감지기를 맞혀라.',set:{tg:20},ok:s=>s.hit,sol:{i:20}}],
+  quiz:[Q('입사각이 30°이면 반사각은?',['30°','60°','90°'],'입사각과 반사각의 크기는 항상 같다.'),Q('입사각과 반사각을 잴 때 기준이 되는 선은?',['법선 (거울 면에 수직인 선)','거울 면','들어오는 빛'],'두 각 모두 법선과 빛 사이의 각이다.')]},
+ M:{op:'거울 호수',code:'Z8CE',
+  text:['빛이 물체의 표면에서 되돌아 나오는 현상을 반사라고 한다.','{법선|거울 면에 수직으로 세운 선}을 기준으로 각을 잰다.','{입사각|들어오는 빛과 법선 사이의 각}과 {반사각|반사된 빛과 법선 사이의 각}의 크기는 항상 같다.','거울처럼 매끄러운 표면에서는 빛이 한 방향으로 반사되는 {정반사|한 방향으로 나란하게 반사}가 일어난다.','종이처럼 거친 표면에서는 빛이 여러 방향으로 반사되는 {난반사|여러 방향으로 흩어지는 반사}가 일어난다.','난반사가 일어날 때도 빛 하나하나는 반사 법칙을 따른다.'],
+  pre:Q('들어오는 빛이 거울 면과 60°를 이루면 반사각은 몇 도일까?',['30°','60°','120°'],'입사각은 법선을 기준으로 재므로 90° - 60° = 30°이고, 반사각도 30°이다.'),
+  ms:[{t:'빛과 거울 면 사이의 각이 60°가 되게 하고 반사각을 확인하라.',ok:s=>s.i===30&&!s.rough,sol:{i:30,rough:0}},{t:'표면을 거칠게 바꾸어 반사된 빛의 방향을 관찰하라.',ok:s=>s.rough===1,sol:{rough:1}}],
+  quiz:[Q('잔잔한 호수에 산의 모습이 또렷하게 비치는 것은 어떤 현상일까?',['정반사','난반사','굴절'],'매끄러운 수면에서는 빛이 한 방향으로 나란하게 반사된다.'),Q('들어오는 빛과 거울 면 사이의 각이 60°이면 반사각은?',['30°','60°','90°'],'입사각 = 90° - 60° = 30°, 반사각 = 입사각 = 30°이다.')]},
+ H:{op:'귀환 신호',code:'M2VJ',
+  text:'빛이 반사될 때 입사각과 반사각의 크기는 항상 같으며, 이를 반사 법칙이라고 한다. 표면이 매끄러우면 정반사가, 거칠면 난반사가 일어나지만 어느 경우에도 반사 법칙은 성립한다. 우리가 여러 방향에서 물체를 볼 수 있는 것은 난반사 덕분이다. 두 장의 거울을 직각으로 맞대면 빛은 두 번 반사된 뒤 들어온 방향과 나란하게 되돌아 나간다. 자전거의 반사판과 도로 표지판은 이 원리를 이용하며, 달 표면에 설치한 반사 장치에 레이저를 쏘아 지구와 달 사이의 거리를 재기도 한다.',
+  ms:[{t:'입사각을 3가지 이상 바꾸며 나가는 빛의 방향을 확인하라.',set:{seen:{}},ok:s=>s.nseen>=3,sol:[{i:35},{i:50},{i:65}]}],
+  ext:[{q:'직각으로 놓인 두 거울에서는 빛이 어느 각도로 들어와도 왔던 방향으로 되돌아간다. 반사 법칙으로 설명해 보자.',g:'첫 번째 거울에서의 반사각과 두 번째 거울에서의 입사각을 더하면 항상 90°가 된다는 점에서 출발해 보자.'},{q:'잠망경 속 두 거울은 왜 45° 기울어져 있을까?',g:'입사각이 45°이면 반사된 빛은 진행 방향이 90° 꺾인다. 이것이 두 번 일어나면 어떻게 될까?'}],
+  inq:'작은 거울 두 장으로 잠망경을 설계하고, 거울의 각도가 45°에서 벗어나면 어떻게 보이는지 조사해 보자.',
+  quiz:[Q('직각으로 맞댄 두 거울에 빛을 비추면, 두 번 반사된 빛은?',['들어온 빛과 나란하게 되돌아간다','들어온 빛과 수직인 방향으로 나간다','두 거울 사이에 갇힌다'],'두 번의 반사를 거치면 빛의 진행 방향이 정확히 반대가 된다.'),Q('잠망경 속 거울은 빛이 들어오는 방향에 대해 몇 도 기울어져 있을까?',['45°','30°','90°'],'입사각 45°로 반사되면 빛의 방향이 90° 꺾인다.')]}},
+{id:3,zone:'빛',title:'빛의 굴절',badge:'굴절 사냥꾼',sim:'refract',
+ core:'빛은 서로 다른 물질의 경계를 지날 때 나아가는 방향이 꺾인다.',
+ warn:'물속 물체는 실제보다 "떠 보인다"(얕아 보인다). 꺾이는 곳은 물속이 아니라 경계면이다. 전반사·빛의 속력은 교육과정 밖 맛보기이다.',
+ gl:[['굴절','refraction','折射'],['경계면','boundary surface','界面'],['굴절각','angle of refraction','折射角'],['입사각','angle of incidence','入射角'],['전반사','total internal reflection','全反射'],['광섬유','optical fiber','光纤']],
+ L:{op:'보석 낚시',code:'D6YA',terms:[0,1],
+  cards:['빛이 공기에서 물로 들어갈 때, 두 물질이 만나는 경계면에서 꺾인다.','이렇게 빛이 꺾이는 것을 굴절이라고 한다.','굴절 때문에 물속의 동전은 실제보다 떠 보인다.','물에 담근 다리가 짧아 보이는 것도 굴절 때문이다.'],
+  ms:[{t:'꺾인 빛으로 물속 보석을 맞혀라.',set:{tg:170},ok:s=>s.hit,sol:{i:30}},{t:'더 먼 곳의 보석을 맞혀라.',set:{tg:266},ok:s=>s.hit,sol:{i:50}},{t:'마지막 보석을 맞혀라.',set:{tg:220},ok:s=>s.hit,sol:{i:41}}],
+  quiz:[Q('물속의 동전은 실제 위치보다 어떻게 보일까?',['떠 보인다','더 깊어 보인다','똑같이 보인다'],'동전에서 나온 빛이 물 밖으로 나오며 꺾이기 때문에 실제보다 얕은 곳에 있는 것처럼 보인다.'),Q('빛이 꺾이는 곳은 어디일까?',['공기와 물이 만나는 경계면','물속 깊은 곳','공기 중 어디에서나'],'굴절은 서로 다른 물질의 경계면에서 일어난다.')]},
+ M:{op:'꺾인 빨대',code:'P5GW',
+  text:['빛이 한 물질에서 다른 물질로 비스듬히 들어가면 {경계면|두 물질이 만나는 면}에서 꺾인다.','이 현상을 굴절이라고 한다.','{굴절각|굴절된 빛과 법선 사이의 각}은 물질에 따라 달라진다.','빛이 공기에서 물로 들어갈 때는 굴절각이 입사각보다 작다.','컵 속의 빨대가 꺾여 보이는 것은, 빨대에서 나온 빛이 물 밖으로 나오며 굴절하기 때문이다.'],
+  pre:Q('같은 각도로 빛을 비출 때, 물과 유리 중 어디에서 빛이 더 많이 꺾일까?',['유리','물','똑같이 꺾인다'],'물질의 종류에 따라 빛이 꺾이는 정도가 다르다. 유리에서 더 많이 꺾인다.'),
+  ms:[{t:'입사각을 40°로 맞추고 굴절각을 읽어라.',ok:s=>s.i===40&&s.n<1.4,sol:{i:40,n:1.33}},{t:'아래쪽 물질을 유리로 바꾸고, 같은 입사각에서 굴절각을 비교하라.',ok:s=>s.i===40&&s.n>1.4,sol:{n:1.5}}],
+  quiz:[Q('빛이 공기에서 물로 비스듬히 들어갈 때, 굴절각과 입사각의 크기는?',['굴절각이 입사각보다 작다','굴절각이 입사각보다 크다','두 각의 크기가 같다'],'공기에서 물로 들어가는 빛은 법선 쪽으로 꺾인다.'),Q('컵 속의 빨대가 꺾여 보이는 까닭은?',['빨대에서 나온 빛이 물과 공기의 경계면에서 굴절하기 때문이다','빨대가 물속에서 실제로 휘기 때문이다','빛이 물속에서 사라지기 때문이다'],'눈은 빛이 곧게 왔다고 느끼므로, 꺾여 들어온 빛의 연장선 위에 빨대가 있는 것처럼 본다.')]},
+ H:{op:'물고기 사냥꾼',code:'X3KR',
+  text:'빛이 서로 다른 물질의 경계면에 비스듬히 입사하면 진행 방향이 꺾이는데, 이를 굴절이라고 한다. 굴절은 물질에 따라 빛의 속력이 다르기 때문에 일어난다. 빛이 공기에서 물로 들어갈 때는 굴절각이 입사각보다 작고, 물에서 공기로 나올 때는 굴절각이 입사각보다 크다. 우리 눈은 빛이 직진해 왔다고 여기므로 물속의 물체는 실제보다 얕은 곳에 있는 것처럼 보인다. 물에서 공기로 나가는 빛의 입사각이 어느 한계보다 커지면 빛은 물 밖으로 나가지 못하고 모두 반사된다.',
+  ms:[{t:'빛의 방향을 물 → 공기로 바꾸고, 입사각 30°에서 굴절각을 확인하라.',ok:s=>s.rev===1&&s.i===30,sol:{rev:1,i:30}},{t:'빛이 물 밖으로 나가지 못하는 각도를 찾아라.',ok:s=>s.rev===1&&s.tir,sol:{rev:1,i:55}}],
+  ext:[{q:'물에서 공기로 나가는 빛의 입사각을 점점 키우면 어떤 일이 일어날까?',g:'굴절각이 90°에 이르는 순간을 실험 장치에서 찾아보자. 그보다 큰 각도에서는 빛이 모두 반사된다. 이 현상을 전반사라고 한다.',b:1},{q:'물가에서 물고기를 작살로 잡으려면 보이는 위치보다 아래를 겨눠야 한다. 그 까닭은?',g:'물고기에서 나온 빛은 수면에서 꺾여 눈에 들어온다. 눈은 그 빛의 연장선 위에 물고기가 있다고 느낀다.'}],
+  inq:'광섬유가 빛을 멀리까지 전달하는 원리와 쓰임새(통신, 내시경)를 조사해 보자.',
+  quiz:[Q('빛이 물에서 공기로 나올 때, 굴절각과 입사각의 크기는?',['굴절각이 입사각보다 크다','굴절각이 입사각보다 작다','두 각의 크기가 같다'],'물에서 공기로 나오는 빛은 법선에서 멀어지는 쪽으로 꺾인다.'),Q('물 밖에서 물속의 물고기를 작살로 잡으려면 어디를 겨눠야 할까?',['보이는 곳보다 아래','보이는 곳보다 위','보이는 곳 그대로'],'물고기는 실제보다 떠 보이므로 실제 위치는 보이는 곳보다 깊다.')]}},
+{id:4,zone:'빛',title:'거울과 렌즈의 상',badge:'상의 설계자',sim:'lens',
+ core:'거울과 렌즈는 빛을 반사하거나 굴절시켜 상을 만들고, 그 모양에 따라 상의 크기와 방향이 달라진다.',
+ warn:'볼록 렌즈·오목 거울은 "항상 크게"가 아니다. 물체가 멀면 거꾸로 선 상이 된다. 실상·허상 용어는 쓰지 않았고, 초점·근시 교정은 교육과정 밖 맛보기이다.',
+ gl:[['볼록 거울','convex mirror','凸面镜'],['오목 거울','concave mirror','凹面镜'],['볼록 렌즈','convex lens','凸透镜'],['오목 렌즈','concave lens','凹透镜'],['평면거울','plane mirror','平面镜'],['상','image','像'],['초점','focal point','焦点']],
+ L:{op:'장비 보급 작전',code:'B9FH',terms:[0,1,2],
+  cards:['거울이나 렌즈를 통해 보이는 물체의 모습을 상이라고 한다.','볼록 거울은 넓은 범위를 작게 비춘다. 편의점 천장의 거울이 볼록 거울이다.','오목 거울은 가까이 있는 물체를 크게 비춘다. 화장 거울에 쓰인다.','볼록 렌즈는 가까이 있는 물체를 크게 보여 준다. 돋보기가 볼록 렌즈이다.'],
+  ms:[{t:'굽은 길 모퉁이다. 넓은 범위를 한눈에 비추는 장비를 보급하라.',ok:s=>s.dev==='cvxM',sol:{dev:'cvxM'}},{t:'지도의 작은 글씨를 크게 봐야 한다. 알맞은 렌즈를 골라 크고 바로 선 상을 만들어라.',ok:s=>s.dev==='cvxL'&&s.big&&s.up,sol:{dev:'cvxL',d:.5}},{t:'얼굴을 크게 비춰 봐야 한다. 알맞은 거울을 골라 크고 바로 선 상을 만들어라.',ok:s=>s.dev==='ccvM'&&s.big&&s.up,sol:{dev:'ccvM',d:.5}}],
+  quiz:[Q('돋보기에 쓰이는 렌즈는?',['볼록 렌즈','오목 렌즈','평면 유리'],'볼록 렌즈는 가까이 있는 물체를 크게 보여 준다.'),Q('굽은 길에 세워 넓은 범위를 비추는 거울은?',['볼록 거울','오목 거울','평면거울'],'볼록 거울은 상이 작지만 넓은 범위를 비춘다.')]},
+ M:{op:'장비 도감 완성',code:'T7MZ',
+  text:['평면거울에는 물체와 크기가 같고 좌우가 바뀐 상이 생긴다.','{볼록 거울|가운데가 볼록 나온 거울}에는 항상 물체보다 작고 바로 선 상이 생긴다.','{오목 거울|가운데가 오목하게 들어간 거울}은 가까운 물체를 크고 바로 선 상으로, 먼 물체를 거꾸로 선 상으로 비춘다.','{볼록 렌즈|가운데가 가장자리보다 두꺼운 렌즈}도 가까운 물체는 크고 바로 선 상으로, 먼 물체는 거꾸로 선 상으로 보여 준다.','{오목 렌즈|가운데가 가장자리보다 얇은 렌즈}로 보면 항상 물체보다 작고 바로 선 상이 보인다.'],
+  pre:Q('볼록 렌즈를 눈에서 멀리 떼고 먼 풍경을 보면 어떻게 보일까?',['거꾸로 보인다','크고 바로 보인다','원래 모습 그대로 보인다'],'볼록 렌즈는 멀리 있는 물체를 거꾸로 선 상으로 보여 준다.'),
+  ms:[{t:'볼록 렌즈로 거꾸로 선 상을 만들어라.',ok:s=>s.dev==='cvxL'&&!s.up&&!s.blur,sol:{dev:'cvxL',d:2}},{t:'거리와 관계없이 항상 작고 바로 선 상을 만드는 장비 2가지를 모두 써 보라.',set:{tried:{}},ok:s=>s.tried.cvxM&&s.tried.ccvL,sol:[{dev:'cvxM'},{dev:'ccvL'}]}],
+  quiz:[Q('오목 렌즈로 글씨를 보면 어떤 상이 보일까?',['작고 바로 선 상','크고 바로 선 상','거꾸로 선 상'],'오목 렌즈는 물체의 위치와 관계없이 작고 바로 선 상을 만든다.'),Q('오목 거울로 멀리 있는 물체를 비추면 어떤 상이 생길까?',['거꾸로 선 상','크고 바로 선 상','물체와 크기가 같은 바로 선 상'],'오목 거울은 가까운 물체는 크고 바로 선 상으로, 먼 물체는 거꾸로 선 상으로 비춘다.')]},
+ H:{op:'뒤집힘의 경계',code:'C4QN',
+  text:'평면거울은 물체와 같은 크기의 상을 만들지만, 면이 굽은 거울과 렌즈는 빛을 모으거나 퍼뜨려 상의 크기와 방향을 바꾼다. 빛을 퍼뜨리는 볼록 거울과 오목 렌즈는 물체의 위치와 관계없이 작고 바로 선 상을 만든다. 빛을 모으는 오목 거울과 볼록 렌즈는 물체가 가까이 있을 때는 크고 바로 선 상을, 멀리 있을 때는 거꾸로 선 상을 만든다. 상의 모습이 바뀌는 기준이 되는 위치가 초점이며, 초점은 나란하게 들어온 빛이 모이는 점이기도 하다.',
+  ms:[{t:'볼록 렌즈에서 상이 뒤집히는 경계 위치를 찾아라.',ok:s=>s.dev==='cvxL'&&s.blur,sol:{dev:'cvxL',d:1}},{t:'오목 거울에도 같은 경계가 있는지 확인하라.',ok:s=>s.dev==='ccvM'&&s.blur,sol:{dev:'ccvM',d:1}}],
+  ext:[{q:'바로 선 상이 거꾸로 선 상으로 바뀌는 경계에서는 상이 어떻게 보일까?',g:'실험 장치에서 볼록 렌즈를 고르고 거리를 천천히 바꿔 보자. 경계 근처에서 상은 매우 커지다가 흐려진다. 이 위치가 초점이다.',b:1},{q:'먼 곳이 잘 보이지 않는 근시의 안경에는 오목 렌즈를 쓴다. 빛을 퍼뜨리는 렌즈가 필요한 까닭은?',g:'근시인 눈은 먼 곳에서 온 빛을 망막보다 앞쪽에 모은다. 빛을 미리 조금 퍼뜨려 주면 어떻게 될까?',b:1}],
+  inq:'투명한 필름 위에 물방울을 떨어뜨려 물방울 렌즈를 만들고, 물방울의 크기와 확대되는 정도 사이의 관계를 조사해 보자.',
+  quiz:[Q('볼록 렌즈에서 상의 모습이 바뀌는 기준이 되는 위치의 이름은?',['초점','법선','경계면'],'물체가 초점보다 가까우면 크고 바로 선 상이, 멀면 거꾸로 선 상이 보인다.'),Q('근시를 교정하는 안경에 쓰이는 렌즈는?',['오목 렌즈','볼록 렌즈','평면 유리'],'오목 렌즈가 빛을 퍼뜨려 상이 망막에 맺히도록 돕는다.')]}},
+{id:5,zone:'빛',title:'빛의 합성',badge:'빛의 조율사',sim:'color',
+ core:'빛의 삼원색인 빨간색, 초록색, 파란색 빛을 합성하면 여러 가지 색을 만들 수 있고, 세 빛을 모두 합성하면 흰색이 된다.',
+ warn:'물감 섞기 비유는 쓰지 않는다. 빛은 합성할수록 밝아지고 물감은 섞을수록 어두워진다. 색 이름을 항상 글자로 함께 표시하여 색각이상 학생도 풀 수 있게 했다.',
+ gl:[['빛의 삼원색','three primary colors of light','光的三原色'],['빛의 합성','mixing of colored light','色光的混合'],['노란색','yellow','黄色'],['청록색','cyan','青色'],['자홍색','magenta','品红色'],['화소','pixel','像素']],
+ L:{op:'무대 조명 작전',code:'V2RD',terms:[0,1],
+  cards:['빨간색, 초록색, 파란색 빛을 빛의 삼원색이라고 한다.','여러 색의 빛이 합쳐져 다른 색으로 보이는 것을 빛의 합성이라고 한다.','빛은 합성할수록 더 밝아진다.','세 가지 빛을 모두 합성하면 흰색이 된다. 공연장의 조명이 이렇게 색을 만든다.'],
+  ms:[{t:'무대를 노란색 빛으로 비춰라.',ok:s=>s.name==='노란색',sol:{r:1,g:1,b:0}},{t:'이번에는 자홍색 빛이 필요하다.',ok:s=>s.name==='자홍색',sol:{r:1,g:0,b:1}},{t:'마지막 장면이다. 흰색 빛을 만들어라.',ok:s=>s.name==='흰색',sol:{r:1,g:1,b:1}}],
+  quiz:[Q('빨간색 빛과 초록색 빛을 합성하면 무슨 색이 될까?',['노란색','자홍색','청록색'],'빨간색 빛 + 초록색 빛 = 노란색 빛이다.'),Q('빨간색, 초록색, 파란색 빛을 모두 합성하면?',['흰색','검은색','갈색'],'빛은 합성할수록 밝아져 세 빛을 모두 합성하면 흰색이 된다.')]},
+ M:{op:'화면 속 비밀',code:'J8WK',
+  text:['빛의 삼원색은 빨간색, 초록색, 파란색이다.','{빛의 합성|여러 색의 빛이 합쳐져 다른 색으로 보이는 현상}으로 다양한 색을 만들 수 있다.','빨간색과 초록색 빛을 합성하면 노란색, 초록색과 파란색 빛을 합성하면 청록색, 빨간색과 파란색 빛을 합성하면 자홍색이 된다.','세 빛을 모두 합성하면 흰색이 된다.','스마트폰 화면은 {화소|화면을 이루는 아주 작은 점}마다 빨간색, 초록색, 파란색 빛의 밝기를 조절하여 색을 나타낸다.'],
+  pre:Q('스마트폰 화면의 흰색 부분을 크게 확대해 보면 어떻게 보일까?',['빨간색, 초록색, 파란색 점이 모두 켜져 있다','흰색 점만 켜져 있다','모든 점이 꺼져 있다'],'화면에는 흰색 점이 따로 없다. 세 가지 색의 점이 함께 켜져 흰색으로 보인다.'),
+  ms:[{t:'청록색 빛을 만들어라.',ok:s=>s.name==='청록색',sol:{r:0,g:1,b:1}},{t:'화면 확대 창을 보며, 흰색을 낼 때 켜지는 점을 확인하라.',ok:s=>s.name==='흰색',sol:{r:1,g:1,b:1}}],
+  quiz:[Q('청록색 빛을 만들려면 어떤 두 빛을 합성해야 할까?',['초록색과 파란색','빨간색과 초록색','빨간색과 파란색'],'초록색 빛 + 파란색 빛 = 청록색 빛이다.'),Q('스마트폰 화면에서 노란색으로 보이는 부분을 확대하면 켜져 있는 점은?',['빨간색 점과 초록색 점','노란색 점','초록색 점과 파란색 점'],'화면은 빨간색, 초록색, 파란색 점만으로 모든 색을 나타낸다.')]},
+ H:{op:'컬러 그림자',code:'N6XT',
+  text:'빨간색, 초록색, 파란색 빛을 빛의 삼원색이라 하며, 이 세 빛의 밝기를 조절하여 합성하면 거의 모든 색의 빛을 만들 수 있다. 빨간색과 초록색 빛을 합성하면 노란색, 초록색과 파란색 빛을 합성하면 청록색, 빨간색과 파란색 빛을 합성하면 자홍색으로 보이고, 세 빛을 모두 합성하면 흰색으로 보인다. 빛은 합성할수록 눈에 들어오는 빛의 양이 늘어 밝아진다. 반대로 물감은 섞을수록 반사하는 빛이 줄어 어두워진다. 여러 색의 조명을 서로 다른 위치에서 비추면, 한 조명의 빛만 가려진 곳에 나머지 조명의 빛이 남아 색깔이 있는 그림자가 생긴다.',
+  ms:[{t:'빨간색과 초록색 조명만 켜고, 두 그림자의 색을 확인하라.',ok:s=>s.r&&s.g&&!s.b,sol:{r:1,g:1,b:0}},{t:'세 조명을 모두 켜고, 그림자 3개의 색을 확인하라.',ok:s=>s.r&&s.g&&s.b,sol:{r:1,g:1,b:1}}],
+  ext:[{q:'빨간색 조명과 초록색 조명을 함께 비출 때 생기는 두 그림자는 각각 무슨 색일까?',g:'빨간색 빛이 가려진 곳에는 어떤 빛만 도달하는지 생각해 보자.'},{q:'노란색 물체에 파란색 조명만 비추면 어떻게 보일까?',g:'노란색 물체는 빨간색 빛과 초록색 빛을 반사한다. 파란색 빛은 어떻게 될까?'}],
+  inq:'빛의 합성과 물감의 혼합이 반대의 결과를 내는 까닭을 프린터 잉크의 색(청록, 자홍, 노랑)과 연결하여 조사해 보자.',
+  quiz:[Q('빨간색과 초록색 조명을 함께 비출 때, 빨간색 빛만 가려진 곳의 그림자는 무슨 색일까?',['초록색','빨간색','검은색'],'빨간색 빛이 가려진 곳에는 초록색 빛만 도달한다.'),Q('빛의 합성과 물감의 혼합의 차이로 옳은 것은?',['빛은 합성할수록 밝아진다','빛은 합성할수록 어두워진다','둘 다 섞을수록 어두워진다'],'빛은 합성할수록 눈에 들어오는 빛의 양이 늘어난다.')]}},
+{id:6,zone:'별과 우주',title:'연주 시차',badge:'시차 추적자',sim:'parallax',
+ core:'지구가 공전하기 때문에 가까운 별은 위치가 달라져 보이며, 별까지의 거리가 가까울수록 연주 시차가 크다.',
+ warn:'연주 시차는 6개월 간격으로 잰 시차의 "절반"이다. 그림의 각도는 크게 과장된 것임을 화면에 밝혔다. pc 단위와 거리 = 1 ÷ 연주 시차 관계식은 교과서가 다루는 범위와 대조가 필요하다.',
+ gl:[['시차','parallax','视差'],['연주 시차','annual parallax','周年视差'],['공전','revolution','公转'],['파섹 (pc)','parsec','秒差距'],['광년','light-year','光年']],
+ L:{op:'엄지 척 작전',code:'G3BP',terms:[0,1,2],
+  cards:['팔을 뻗어 엄지를 세우고 두 눈을 번갈아 감아 보라. 엄지가 움직여 보인다.','보는 위치에 따라 물체의 위치가 달라져 보이는 각을 시차라고 한다.','엄지를 눈에 가까이 할수록 더 크게 움직여 보인다. 가까울수록 시차가 크다.','지구는 태양 둘레를 돈다. 이것을 공전이라고 한다.','6개월 간격으로 별을 보면 시차가 생긴다. 그 절반이 연주 시차이다.'],
+  ms:[{t:'별을 움직여 연주 시차가 가장 커지게 하라.',ok:s=>s.d===1,sol:{d:1}},{t:'연주 시차가 0.50″인 별을 찾아라.',ok:s=>s.d===2,sol:{d:2}}],
+  quiz:[Q('가까이 있는 별의 연주 시차는 멀리 있는 별보다?',['크다','작다','같다'],'가까운 물체일수록 보는 위치에 따라 더 크게 움직여 보인다.'),Q('별의 시차가 생기는 까닭은?',['지구가 공전하여 별을 보는 위치가 달라지기 때문이다','별이 스스로 빛을 내기 때문이다','별이 매우 뜨겁기 때문이다'],'지구가 태양 둘레를 공전하므로 6개월 뒤에는 다른 위치에서 별을 보게 된다.')]},
+ M:{op:'6개월의 추적',code:'Y9HC',
+  text:['관측하는 위치에 따라 물체의 위치가 달라져 보이는 각을 시차라고 한다.','지구는 태양 둘레를 {공전|다른 천체의 둘레를 도는 운동}한다.','그래서 6개월 간격으로 같은 별을 관측하면 별의 위치가 달라져 보인다.','이때 생기는 시차의 절반을 {연주 시차|6개월 간격으로 잰 시차의 1/2}라고 한다.','별이 가까울수록 연주 시차가 크고, 멀수록 작다.','연주 시차는 매우 작아서 {″|초, 1°를 3600으로 나눈 각} 단위로 나타낸다.'],
+  pre:Q('별이 더 멀어지면 연주 시차는 어떻게 될까?',['작아진다','커진다','변하지 않는다'],'멀리 있는 물체일수록 보는 위치가 달라져도 덜 움직여 보인다.'),
+  ms:[{t:'6개월 간격 시차가 0.40″가 되는 거리를 찾아라.',ok:s=>s.d===5,sol:{d:5}},{t:'연주 시차가 0.25″인 별을 찾아라.',ok:s=>s.d===4,sol:{d:4}}],
+  quiz:[Q('6개월 간격으로 잰 시차가 0.4″인 별의 연주 시차는?',['0.2″','0.4″','0.8″'],'연주 시차는 6개월 간격으로 잰 시차의 절반이다.'),Q('연주 시차가 0.1″인 별과 0.5″인 별 중 지구에 더 가까운 별은?',['0.5″인 별','0.1″인 별','두 별의 거리는 같다'],'가까운 별일수록 연주 시차가 크다.')]},
+ H:{op:'1파섹의 약속',code:'E5MA',
+  text:'지구가 태양 둘레를 공전하기 때문에 6개월 간격으로 가까운 별을 관측하면 멀리 있는 배경 별에 대해 위치가 달라져 보인다. 이때 측정한 시차의 1/2을 연주 시차라고 한다. 연주 시차는 별까지의 거리에 반비례하므로, 연주 시차를 측정하면 별까지의 거리를 구할 수 있다. 연주 시차가 1″인 별까지의 거리를 1 pc(파섹)이라 하며, 이는 약 3.26광년이다. 그러나 멀리 있는 별은 연주 시차가 너무 작아 측정하기 어려우므로, 이 방법은 비교적 가까운 별에만 쓸 수 있다.',
+  ms:[{t:'10 pc 거리에 있는 별의 연주 시차를 확인하라.',ok:s=>s.d===10,sol:{d:10}},{t:'연주 시차가 0.20″인 별이 몇 pc 거리에 있는지 찾아라.',ok:s=>s.d===5,sol:{d:5}}],
+  ext:[{q:'별까지의 거리(pc)와 연주 시차(″) 사이에는 어떤 관계식이 성립할까?',g:'실험 장치에서 거리와 연주 시차를 곱해 보자. 거리(pc) = 1 ÷ 연주 시차(″)임을 확인할 수 있다.'},{q:'연주 시차가 관측된다는 것은 지구가 공전한다는 증거가 된다. 그 까닭은?',g:'지구가 움직이지 않는다면 6개월 뒤에도 별은 배경 별에 대해 같은 자리에 보일 것이다.'}],
+  inq:'연주 시차로 거리를 잴 수 없는 먼 별과 은하의 거리는 어떤 방법으로 알아내는지 조사해 보자.',
+  quiz:[Q('연주 시차가 0.1″인 별까지의 거리는?',['10 pc','1 pc','0.1 pc'],'거리(pc) = 1 ÷ 연주 시차(″) = 1 ÷ 0.1 = 10 pc이다.'),Q('아주 멀리 있는 별의 거리를 연주 시차로 구하기 어려운 까닭은?',['연주 시차가 너무 작아 측정하기 어렵기 때문이다','멀리 있는 별은 움직이지 않기 때문이다','멀리 있는 별은 빛을 내지 않기 때문이다'],'별이 멀수록 연주 시차가 작아져 정확히 재기 어렵다.')]}},
+{id:7,zone:'별과 우주',title:'거리와 밝기',badge:'밝기 측량사',sim:'bright',
+ core:'별빛은 사방으로 퍼져 나가므로, 별의 밝기는 거리의 제곱에 반비례한다.',
+ warn:'"거리 2배 → 밝기 1/2"로 잘못 생각하기 쉽다. 넓이가 4배가 된다는 것을 칸 수로 직접 세게 했다.',
+ gl:[['밝기','brightness','亮度'],['넓이 (면적)','area','面积'],['반비례','inverse proportion','反比例'],['거리의 제곱','square of the distance','距离的平方']],
+ L:{op:'빛 스프레이',code:'Q4ZJ',terms:[0,1],
+  cards:['스프레이를 멀리서 뿌릴수록 페인트가 넓게 퍼지고 색이 흐려진다.','별빛도 사방으로 퍼져 나간다.','거리가 2배가 되면 같은 빛이 비추는 넓이는 4배가 된다.','넓게 퍼진 만큼 어두워진다. 그래서 밝기는 1/4이 된다.'],
+  ms:[{t:'빛이 4칸에 퍼지는 거리를 찾아라.',ok:s=>s.d===2,sol:{d:2}},{t:'한 칸의 밝기가 1/9이 되는 거리를 찾아라.',ok:s=>s.d===3,sol:{d:3}}],
+  quiz:[Q('광원으로부터의 거리가 2배가 되면 빛이 퍼지는 넓이는?',['4배가 된다','2배가 된다','변하지 않는다'],'가로와 세로가 모두 2배가 되므로 넓이는 4배가 된다.'),Q('거리가 2배가 되면 밝기는?',['1/4이 된다','1/2이 된다','2배가 된다'],'같은 빛이 4배 넓은 면에 퍼지므로 밝기는 1/4이 된다.')]},
+ M:{op:'가로등 수사대',code:'F7TV',
+  text:['별에서 나온 빛은 사방으로 퍼져 나간다.','별에서 멀어질수록 같은 양의 빛이 더 넓은 면적을 비춘다.','거리가 2배, 3배가 되면 빛이 비추는 면적은 4배, 9배가 된다.','그래서 같은 면적이 받는 빛의 양은 1/4, 1/9로 줄어든다.','즉, 별의 밝기는 거리의 제곱에 {반비례|한쪽이 커지는 만큼 다른 쪽이 작아지는 관계}한다.','같은 가로등도 멀리 있는 것이 더 어둡게 보이는 까닭이다.'],
+  pre:Q('광원으로부터의 거리가 3배가 되면 밝기는 어떻게 될까?',['1/9이 된다','1/3이 된다','1/6이 된다'],'밝기는 거리의 제곱에 반비례한다. 3 × 3 = 9이므로 1/9이 된다.'),
+  ms:[{t:'한 칸의 밝기가 1/9이 되는 거리를 찾아 예측을 확인하라.',ok:s=>s.d===3,sol:{d:3}},{t:'밝기가 1/16이 되는 거리를 찾아라.',ok:s=>s.d===4,sol:{d:4}}],
+  quiz:[Q('별까지의 거리가 4배가 되면 별의 밝기는?',['1/16이 된다','1/4이 된다','1/8이 된다'],'4 × 4 = 16이므로 밝기는 1/16이 된다.'),Q('똑같은 가로등 두 개 중 하나가 더 밝게 보인다. 어느 쪽일까?',['더 가까이 있는 가로등','더 멀리 있는 가로등','거리와 관계없다'],'내보내는 빛의 양이 같으면 가까이 있는 것이 더 밝게 보인다.')]},
+ H:{op:'행성의 온도계',code:'A8DW',
+  text:'별이 내보낸 빛은 사방으로 고르게 퍼져 나가므로, 별에서 멀어질수록 같은 양의 빛이 더 넓은 면적에 퍼진다. 빛이 비추는 면적은 거리의 제곱에 비례하여 넓어지므로, 같은 면적이 받는 빛의 양, 즉 관측되는 밝기는 거리의 제곱에 반비례한다. 따라서 실제로 내보내는 빛의 양이 같은 두 별이라도 멀리 있는 별이 더 어둡게 보인다. 거꾸로, 별이 실제로 내보내는 빛의 양을 알고 있다면 관측되는 밝기로부터 그 별까지의 거리를 알아낼 수 있다.',
+  ms:[{t:'목성은 태양에서 지구보다 약 5배 멀다. 그 거리에서의 밝기를 확인하라.',ok:s=>s.d===5,sol:{d:5}},{t:'밝기가 1/4이 되는 거리를 찾아라.',ok:s=>s.d===2,sol:{d:2}}],
+  ext:[{q:'목성이 받는 햇빛은 지구가 받는 햇빛의 몇 분의 일일까? 그것은 목성의 환경에 어떤 영향을 줄까?',g:'거리가 5배이면 밝기는 1/25이 된다. 받는 에너지가 적으면 온도는 어떻게 될까?'},{q:'실제 밝기를 알고 있는 천체가 있다면, 보이는 밝기만으로 거리를 알아낼 수 있다. 그 까닭은?',g:'밝기가 거리의 제곱에 반비례한다는 관계를 거꾸로 이용한다. 천문학자들은 이런 천체를 먼 은하의 거리를 재는 데 쓴다.',b:1}],
+  inq:'조도 측정 앱과 전등을 이용해 거리에 따른 밝기를 측정하고, 거리의 제곱에 반비례하는지 그래프로 확인해 보자.',
+  quiz:[Q('태양에서 5배 먼 곳에서 받는 햇빛의 밝기는?',['1/25','1/5','1/10'],'5 × 5 = 25이므로 밝기는 1/25이 된다.'),Q('밝기가 1/16이 되려면 거리가 몇 배가 되어야 할까?',['4배','8배','16배'],'4 × 4 = 16이므로 거리가 4배일 때 밝기가 1/16이 된다.')]}},
+{id:8,zone:'별과 우주',title:'별의 등급',badge:'등급 판정관',sim:'mag',
+ core:'등급의 숫자가 작을수록 밝은 별이다. 겉보기 등급은 눈에 보이는 밝기를, 절대 등급은 별을 10 pc 거리에 두었을 때의 밝기를 나타낸다.',
+ warn:'등급은 숫자가 작을수록 밝다(일상의 "등급이 높다"와 혼동 주의). 1등급 차이는 약 2.5배, 5등급 차이는 100배. 음수 등급은 상 수준에서만 다룬다.',
+ gl:[['등급','magnitude','星等'],['겉보기 등급','apparent magnitude','视星等'],['절대 등급','absolute magnitude','绝对星等'],['파섹 (pc)','parsec','秒差距']],
+ L:{op:'별빛 랭킹전',code:'U6NG',terms:[0,1,2],
+  cards:['별의 밝기는 등급으로 나타낸다. 숫자가 작을수록 밝은 별이다.','우리 눈에 보이는 밝기를 나타낸 등급이 겉보기 등급이다.','멀리 있는 별은 실제로 밝아도 어둡게 보인다. 공정한 비교가 아니다.','모든 별을 같은 거리에 세워 놓고 비교한 등급이 절대 등급이다. 달리기에서 출발선을 맞추는 것과 같다.'],
+  ms:[{t:'세 별을 모두 10 pc 출발선에 세워 진짜 밝기를 겨루게 하라.',ok:s=>s.all10,sol:A(0,'all')},{t:'별 다를 가장 가까이 당겨 와, 겉보기 등급을 0등급으로 만들어라.',ok:s=>s.m[2]===0,sol:A(0,'sel:2','d:1')}],
+  quiz:[Q('1등급 별과 6등급 별 중 더 밝은 별은?',['1등급 별','6등급 별','밝기가 같다'],'등급의 숫자가 작을수록 밝은 별이다.'),Q('모든 별을 같은 거리에 놓았다고 보고 비교한 등급은?',['절대 등급','겉보기 등급','거리 등급'],'절대 등급으로 별의 실제 밝기를 비교할 수 있다.')]},
+ M:{op:'진짜 실력 판정',code:'L3PY',
+  text:['별의 밝기는 등급으로 나타내며, 등급의 숫자가 작을수록 밝다.','1등급인 별은 6등급인 별보다 약 100배 밝다.','1등급 차이는 약 2.5배의 밝기 차이이다.','{겉보기 등급|우리 눈에 보이는 밝기를 나타낸 등급}은 별까지의 거리에 따라 달라진다.','{절대 등급|별을 10 pc 거리에 두었다고 가정한 밝기를 나타낸 등급}으로 별의 실제 밝기를 비교한다.','10 pc보다 가까이 있는 별은 겉보기 등급이 절대 등급보다 작다.'],
+  pre:Q('실제로 밝은 별을 아주 멀리 보내면 겉보기 등급의 숫자는 어떻게 될까?',['커진다','작아진다','변하지 않는다'],'멀어지면 어둡게 보이고, 어두울수록 등급의 숫자가 크다.'),
+  ms:[{t:'별 나를 움직여 겉보기 등급이 절대 등급보다 작아지게 하라.',set:{d:[10,10,10],sel:1},ok:s=>s.m[1]<STAR_M[1],sol:A(0,'sel:1','d:4')},{t:'별 가를 움직여 100배 어둡게(5등급 크게) 보이게 하라.',ok:s=>s.m[0]===5,sol:A(0,'sel:0','d:100')}],
+  quiz:[Q('1등급인 별은 6등급인 별보다 약 몇 배 밝을까?',['약 100배','약 5배','약 2.5배'],'5등급 차이는 약 100배의 밝기 차이이다.'),Q('겉보기 등급이 절대 등급보다 작은 별은 어디에 있을까?',['10 pc보다 가까이 있다','10 pc보다 멀리 있다','정확히 10 pc에 있다'],'10 pc에 있을 때보다 밝게 보이므로 10 pc보다 가까이 있다.')]},
+ H:{op:'10파섹 소환',code:'S9KE',
+  text:'별의 밝기는 등급으로 나타내며 등급이 작을수록 밝다. 1등급 차이는 약 2.5배, 5등급 차이는 100배의 밝기 차이에 해당한다. 겉보기 등급은 지구에서 관측한 밝기를 나타내므로 별까지의 거리에 따라 달라지고, 절대 등급은 별이 10 pc의 거리에 있다고 가정했을 때의 밝기를 나타내므로 별이 실제로 내보내는 빛의 양을 비교할 수 있다. 겉보기 등급이 절대 등급보다 작은 별은 10 pc보다 가까이 있고, 큰 별은 10 pc보다 멀리 있다. 아주 밝은 천체의 등급은 0보다 작은 수로 나타낸다.',
+  ms:[{t:'별 가를 10 pc에서 100 pc로 옮기고 등급의 변화를 확인하라.',set:{d:[10,10,10],sel:0},ok:s=>s.d[0]===100,sol:A(0,'sel:0','d:100')},{t:'별 다의 겉보기 등급과 절대 등급이 같아지는 거리를 찾아라.',set:{d:[100,10,1],sel:2},ok:s=>s.d[2]===10,sol:A(0,'sel:2','d:10')}],
+  ext:[{q:'태양의 겉보기 등급은 약 -26.8등급, 절대 등급은 약 4.8등급이다. 이 큰 차이는 무엇을 말해 줄까?',g:'태양은 실제로는 평범한 밝기의 별이지만 지구에 매우 가까이 있어 밝게 보인다.'},{q:'별을 10 pc에서 100 pc로 옮기면 밝기는 1/100이 된다. 등급으로는 얼마나 달라질까?',g:'거리가 10배이면 밝기는 1/100이 되고, 100배의 밝기 차이는 5등급 차이에 해당한다.'}],
+  inq:'밤하늘에서 밝게 보이는 별 3개의 겉보기 등급과 절대 등급을 조사하고, 어느 별이 10 pc보다 가까이 있는지 판정해 보자.',
+  quiz:[Q('겉보기 등급과 절대 등급이 같은 별까지의 거리는?',['10 pc','1 pc','100 pc'],'절대 등급은 별이 10 pc에 있을 때의 밝기를 나타낸다.'),Q('10 pc에 있던 별을 100 pc로 옮기면 겉보기 등급은?',['5등급 커진다','5등급 작아진다','변하지 않는다'],'밝기가 1/100이 되므로 등급의 숫자가 5만큼 커진다.')]}},
+{id:9,zone:'별과 우주',title:'별의 표면 온도와 색',badge:'별빛 감별사',sim:'temp',
+ core:'별의 색은 표면 온도에 따라 다르며, 표면 온도가 높을수록 파란색을, 낮을수록 붉은색을 띤다.',
+ warn:'일상 감각(수도꼭지의 빨강 = 뜨거움)과 반대이다. 파란 별이 더 뜨겁다. 온도 단위(K)와 색 구분 경계 온도는 교과서 표와 대조가 필요하다.',
+ gl:[['표면 온도','surface temperature','表面温度'],['적색 (붉은색)','red','红色'],['청색 (파란색)','blue','蓝色'],['황색 (노란색)','yellow','黄色'],['청백색','blue-white','蓝白色'],['백색 (흰색)','white','白色']],
+ L:{op:'별 대장간',code:'R8HB',terms:[0,1,2],
+  cards:['별은 표면 온도에 따라 색이 다르다.','표면 온도가 낮은 별은 붉은색을 띤다.','표면 온도가 높은 별은 파란색을 띤다. 수도꼭지의 색 표시와는 반대이다.','태양은 그 사이인 노란색(황색) 별이다.','쇠를 달구면 뜨거워질수록 붉은색에서 노란색, 흰색으로 변하는 것과 같다.'],
+  ms:[{t:'주문이 들어왔다. 적색 별을 만들어라.',ok:s=>s.name==='적색',sol:{t:5}},{t:'태양과 같은 황색 별을 만들어라.',ok:s=>s.name==='황색',sol:{t:30}},{t:'가장 뜨거운 청색 별을 만들어라.',ok:s=>s.name==='청색',sol:{t:95}}],
+  quiz:[Q('파란색 별과 붉은색 별 중 표면 온도가 더 높은 별은?',['파란색 별','붉은색 별','온도가 같다'],'표면 온도가 높은 별일수록 파란색을 띤다.'),Q('태양은 무슨 색 별일까?',['황색','청색','적색'],'태양은 노란색을 띠는 황색 별이다.')]},
+ M:{op:'오리온 조사단',code:'W4CQ',
+  text:['별의 색은 {표면 온도|별의 겉 부분의 온도}에 따라 달라진다.','표면 온도가 높은 별일수록 파란색을, 낮은 별일수록 붉은색을 띤다.','표면 온도가 높은 것부터 청색, 청백색, 백색, 황백색, 황색, 주황색, 적색 순이다.','오리온자리의 리겔은 청백색, 베텔게우스는 적색 별이다.','태양은 황색 별이다.'],
+  pre:Q('별의 표면 온도를 점점 높이면 별의 색은 어떻게 변할까?',['붉은색에서 파란색 쪽으로 변한다','파란색에서 붉은색 쪽으로 변한다','색은 변하지 않는다'],'표면 온도가 높을수록 파란색을 띤다.'),
+  ms:[{t:'리겔과 같은 청백색 별을 만들어라.',ok:s=>s.name==='청백색',sol:{t:70}},{t:'베텔게우스와 같은 적색 별을 만들어라.',ok:s=>s.name==='적색',sol:{t:5}}],
+  quiz:[Q('리겔(청백색)과 베텔게우스(적색) 중 표면 온도가 더 높은 별은?',['리겔','베텔게우스','두 별의 온도는 같다'],'청백색 별이 적색 별보다 표면 온도가 높다.'),Q('표면 온도가 높은 별부터 순서대로 나열한 것은?',['청색 - 백색 - 황색 - 적색','적색 - 황색 - 백색 - 청색','황색 - 청색 - 적색 - 백색'],'청색, 청백색, 백색, 황백색, 황색, 주황색, 적색 순으로 표면 온도가 낮아진다.')]},
+ H:{op:'색의 암호',code:'K5VF',
+  text:'별은 표면 온도에 따라 가장 강하게 내보내는 빛의 색이 달라지므로, 별의 색을 관측하면 표면 온도를 알 수 있다. 표면 온도가 높은 별일수록 파란색을 띠고 낮은 별일수록 붉은색을 띠며, 온도가 높은 순서대로 청색, 청백색, 백색, 황백색, 황색, 주황색, 적색으로 구분한다. 쇠를 달굴 때 온도가 오름에 따라 붉은색에서 노란색, 흰색으로 변하는 것도 같은 원리이다. 한편 초록색 빛을 가장 강하게 내는 별은 다른 색의 빛도 함께 내보내기 때문에, 이 빛들이 합성되어 우리 눈에는 흰색에 가깝게 보인다.',
+  ms:[{t:'쇠를 달구듯 온도를 올려, 적색 → 황색 → 백색 별을 차례로 만들어라.',set:{t:0,seen:{}},ok:s=>s.seen['적색']&&s.seen['황색']&&s.name==='백색',sol:[{t:5},{t:30},{t:47}]},{t:'태양보다 조금 더 뜨거운 황백색 별을 만들어라.',ok:s=>s.name==='황백색',sol:{t:38}}],
+  ext:[{q:'밤하늘에서 초록색 별이 관측되지 않는 까닭을 빛의 합성으로 설명해 보자.',g:'초록색 빛을 가장 강하게 내는 별은 빨간색 빛과 파란색 빛도 함께 낸다. 세 빛이 합성되면 무슨 색으로 보일까?',b:1},{q:'색이 같은 두 별의 실제 밝기가 다르다면, 두 별은 무엇이 다를까?',g:'색이 같으면 표면 온도가 같다. 그렇다면 빛을 내는 표면의 넓이, 즉 별의 크기를 생각해 보자.',b:1}],
+  inq:'겨울철 별자리에서 색이 뚜렷한 별을 찾아 색과 표면 온도를 표로 정리해 보자.',
+  quiz:[Q('쇠를 달굴 때 온도가 오름에 따라 색이 변하는 순서는?',['붉은색 → 노란색 → 흰색','흰색 → 노란색 → 붉은색','노란색 → 붉은색 → 흰색'],'온도가 낮을 때는 붉은색, 높아질수록 노란색을 거쳐 흰색으로 변한다.'),Q('초록색 빛을 가장 강하게 내는 별이 흰색에 가깝게 보이는 까닭은?',['다른 색의 빛도 함께 내어 빛이 합성되기 때문이다','초록색 빛은 우주 공간을 지나지 못하기 때문이다','초록색 빛은 눈에 보이지 않기 때문이다'],'여러 색의 빛이 합성되면 흰색에 가깝게 보인다.')]}},
+{id:10,zone:'별과 우주',title:'우리은하',badge:'은하 길잡이',sim:'galaxy',
+ core:'우리은하는 태양계가 속한 은하로, 수많은 별과 성단, 성운으로 이루어져 있다. 태양계는 은하 중심에서 떨어진 나선팔에 있다.',
+ warn:'태양계는 은하의 중심에 있지 않다. 태양계 위치(약 3만 광년)와 우리은하 지름(약 10만 광년), "막대 나선 모양" 표현은 교과서 수치·표현과 대조가 필요하다.',
+ gl:[['우리은하','Milky Way Galaxy','银河系'],['성단','star cluster','星团'],['성운','nebula','星云'],['은하수','Milky Way','银河'],['나선팔','spiral arm','旋臂'],['산개 성단','open cluster','疏散星团'],['구상 성단','globular cluster','球状星团'],['방출 성운','emission nebula','发射星云'],['반사 성운','reflection nebula','反射星云'],['암흑 성운','dark nebula','暗星云']],
+ L:{op:'은하 주소 찾기',code:'M7JX',terms:[0,1,2],
+  cards:['태양계가 속해 있는 은하를 우리은하라고 한다.','우리은하를 위에서 보면 소용돌이 모양이다.','태양계는 은하의 중심이 아니라, 중심에서 떨어진 나선팔에 있다.','별이 무리 지어 모인 것을 성단이라고 한다.','가스와 티끌이 구름처럼 모인 것을 성운이라고 한다.','밤하늘의 은하수는 우리은하의 일부를 안쪽에서 본 모습이다.'],
+  ms:[{t:'은하 지도에 태양계의 위치를 표시하라.',ok:s=>s.pinOk,sol:galSol(1,'L')},{t:'천체 분류 카드를 성단과 성운으로 모두 분류하라.',ok:s=>s.clsDone,sol:galSol(0,'L')}],
+  quiz:[Q('태양계는 우리은하의 어디에 있을까?',['은하 중심에서 떨어진 나선팔','은하의 한가운데','은하의 바깥'],'태양계는 은하 중심에서 떨어진 나선팔에 있다.'),Q('밤하늘에 보이는 은하수의 정체는?',['지구에서 본 우리은하의 일부','지구 대기의 구름','태양계의 행성들'],'은하수는 우리은하의 일부를 은하 안쪽에서 본 모습이다.')]},
+ M:{op:'성단 감식반',code:'D2GT',
+  text:['우리은하는 태양계가 속한 은하로, 지름이 약 10만 광년이다.','태양계는 은하 중심에서 약 3만 광년 떨어진 나선팔에 있다.','{성단|별이 무리 지어 모여 있는 집단}에는 산개 성단과 구상 성단이 있다.','산개 성단은 별들이 엉성하게 모여 있고, 주로 파란색 별로 이루어지며, 나선팔에 분포한다.','구상 성단은 별들이 공 모양으로 빽빽하게 모여 있고, 주로 붉은색 별로 이루어지며, 은하 중심부와 은하를 둘러싼 공간에 분포한다.','{성운|가스와 티끌이 모여 구름처럼 보이는 천체}도 우리은하를 이룬다.'],
+  pre:Q('태양계는 우리은하의 어디쯤에 있을까?',['은하 중심에서 떨어진 나선팔','은하의 한가운데','은하의 바깥'],'태양계는 은하 중심에서 약 3만 광년 떨어진 나선팔에 있다.'),
+  ms:[{t:'은하 지도에 태양계의 위치를 표시하여 예측을 확인하라.',ok:s=>s.pinOk,sol:galSol(1,'M')},{t:'단서 카드를 산개 성단과 구상 성단으로 모두 분류하라.',ok:s=>s.clsDone,sol:galSol(0,'M')}],
+  quiz:[Q('주로 파란색을 띠는 별들이 엉성하게 모여 있는 성단은?',['산개 성단','구상 성단','암흑 성운'],'산개 성단은 별들이 엉성하게 모여 있으며 주로 파란색 별로 이루어진다.'),Q('구상 성단이 주로 분포하는 곳은?',['은하 중심부와 은하를 둘러싼 공간','나선팔 위','태양계 안쪽'],'구상 성단은 은하 중심부와 은하를 둥글게 둘러싼 공간에 분포한다.')]},
+ H:{op:'성운의 정체',code:'H9AZ',
+  text:'우리은하는 지름이 약 10만 광년인 막대 나선 모양의 은하로, 태양계는 은하 중심에서 약 3만 광년 떨어진 나선팔에 위치한다. 우리은하는 수많은 별과 성단, 성운으로 이루어져 있다. 성운은 별과 별 사이의 가스와 티끌이 모여 구름처럼 보이는 천체로, 주변의 뜨거운 별에서 에너지를 받아 스스로 빛을 내는 방출 성운, 주변의 별빛을 반사하여 밝게 보이는 반사 성운, 뒤쪽에서 오는 별빛을 가로막아 어둡게 보이는 암흑 성운으로 구분한다. 은하수는 지구에서 우리은하의 일부를 바라본 모습이며, 은하 중심 방향을 바라보는 여름철에 더 밝고 폭넓게 보인다.',
+  ms:[{t:'은하 지도에 태양계의 위치를 표시하라.',ok:s=>s.pinOk,sol:galSol(1,'H')},{t:'단서 카드를 세 종류의 성운으로 모두 분류하라.',ok:s=>s.clsDone,sol:galSol(0,'H')}],
+  ext:[{q:'은하수가 여름철에 더 밝고 두껍게 보이는 까닭은?',g:'우리나라의 여름철 밤하늘은 은하 중심 방향을 향한다. 은하 중심 쪽에는 별이 더 많이 모여 있다.'},{q:'태양계가 은하의 중심에 있지 않다는 사실은 어떻게 알아냈을까?',g:'구상 성단들이 하늘의 한쪽 방향에 몰려 분포한다는 관측 결과에서 출발했다.',b:1}],
+  inq:'오리온 대성운, 플레이아데스성단 등 유명한 천체 5개를 골라 성단과 성운의 종류로 분류한 도감을 만들어 보자.',
+  quiz:[Q('주변의 뜨거운 별에서 에너지를 받아 스스로 빛을 내는 성운은?',['방출 성운','반사 성운','암흑 성운'],'방출 성운은 가스가 에너지를 받아 스스로 빛을 낸다.'),Q('은하수가 여름철에 더 밝고 두껍게 보이는 까닭은?',['은하 중심 방향을 바라보기 때문이다','여름에 별이 더 많이 생기기 때문이다','여름에 지구가 태양에 더 가깝기 때문이다'],'여름철 밤하늘은 별이 많이 모여 있는 은하 중심 방향을 향한다.')]}},
+{id:11,zone:'별과 우주',title:'팽창하는 우주',badge:'팽창 목격자',sim:'expand',
+ core:'우주는 팽창하고 있으며, 멀리 있는 은하일수록 더 빠르게 멀어진다.',
+ warn:'풍선 비유의 한계를 밝힌다. 은하 자체는 커지지 않고, 팽창의 중심은 없다. 우주의 나이(약 138억 년)는 교과서 수치와 대조가 필요하다.',
+ gl:[['우주 팽창','expansion of the universe','宇宙膨胀'],['은하','galaxy','星系'],['대폭발 우주론','Big Bang theory','大爆炸理论']],
+ L:{op:'풍선 우주',code:'T3EW',terms:[0,1],
+  cards:['풍선에 스티커를 붙이고 불면 스티커 사이가 멀어진다.','우주도 풍선처럼 커지고 있다. 이것을 우주 팽창이라고 한다.','우주가 팽창하면 은하와 은하 사이의 거리가 멀어진다.','어느 스티커에서 보아도 다른 스티커가 모두 멀어진다. 팽창에는 중심이 없다.','단, 은하 자체가 커지는 것은 아니다. 스티커의 크기는 그대로이다.'],
+  ms:[{t:'우주를 2배 크기로 팽창시켜라.',ok:s=>s.k>=1.95,sol:{k:2}},{t:'다른 은하를 눌러 기준을 바꾸고, 거기서도 은하들이 멀어졌는지 확인하라.',ok:s=>s.v!==0,sol:A(0,'v:2')}],
+  quiz:[Q('우주가 팽창하면 은하와 은하 사이의 거리는?',['멀어진다','가까워진다','변하지 않는다'],'우주 공간이 커지므로 은하 사이의 거리가 멀어진다.'),Q('우주 팽창의 중심은 어디일까?',['중심은 따로 없다','우리은하','태양'],'어느 은하에서 보아도 다른 은하들이 멀어지므로 특별한 중심이 없다.')]},
+ M:{op:'도망치는 은하',code:'B6RN',
+  text:['우주는 계속 커지고 있으며, 이를 우주 팽창이라고 한다.','우주가 팽창하면 {은하|수많은 별이 모여 이루어진 거대한 집단}들 사이의 거리가 멀어진다.','멀리 있는 은하일수록 더 빠르게 멀어진다.','어느 은하에서 관측해도 다른 은하들이 멀어지므로, 팽창하는 우주에는 특별한 중심이 없다.','풍선 실험은 이를 잘 보여 주지만, 실제 우주에서는 은하 자체의 크기가 커지지 않는다는 점이 다르다.'],
+  pre:Q('우주가 팽창할 때, 같은 시간 동안 더 많이 멀어지는 은하는?',['멀리 있는 은하','가까이 있는 은하','모두 똑같이 멀어진다'],'멀리 있는 은하일수록 더 빠르게 멀어진다.'),
+  ms:[{t:'우주를 1.5배 이상 팽창시키고, 표에서 달라진 거리를 비교하라.',set:{k:1},ok:s=>s.k>=1.5,sol:{k:1.6}},{t:'기준 은하를 바꿔도 모든 은하가 멀어지는지 확인하라.',ok:s=>s.v!==0&&s.k>=1.5,sol:A(0,'v:3')}],
+  quiz:[Q('우주가 팽창할 때 더 빠르게 멀어지는 은하는?',['더 멀리 있는 은하','더 가까이 있는 은하','거리와 관계없다'],'멀리 있는 은하일수록 더 빠르게 멀어진다.'),Q('풍선 실험이 실제 우주와 다른 점은?',['실제 우주에서는 은하 자체가 커지지 않는다','실제 우주에서는 은하 사이의 거리가 변하지 않는다','실제 우주에는 팽창의 중심이 있다'],'우주가 팽창해도 은하 자체의 크기는 커지지 않는다.')]},
+ H:{op:'시간 되감기',code:'P8YM',
+  text:'외부 은하를 관측하면 대부분의 은하가 우리은하로부터 멀어지고 있으며, 멀리 있는 은하일수록 더 빠르게 멀어진다. 이는 우주 공간 자체가 팽창하고 있기 때문이다. 팽창하는 우주에서는 어느 은하에서 관측하더라도 다른 은하들이 멀어지는 것으로 보이므로 팽창의 중심은 따로 없다. 우주가 팽창하고 있다면 과거의 우주는 지금보다 작았을 것이다. 약 138억 년 전 우주의 모든 물질과 에너지가 모인 한 점에서 대폭발이 일어나 우주가 시작되었고 지금도 팽창하고 있다고 설명하는 이론을 대폭발 우주론(빅뱅 우주론)이라고 한다.',
+  ms:[{t:'시간을 거꾸로 돌려, 우주를 가장 작게 만들어라.',ok:s=>s.k<=.15,sol:{k:.1}},{t:'다시 시간을 흘려보내 우주를 2배로 팽창시키고, 다른 은하에서도 관측하라.',ok:s=>s.k>=1.95&&s.v!==0,sol:s=>{s.k=2;s.v=1}}],
+  ext:[{q:'팽창하는 우주의 시간을 거꾸로 돌리면 어떤 모습에 이를까?',g:'실험 장치에서 우주의 크기를 가장 작게 줄여 보자. 모든 은하가 한 점 가까이 모인다.'},{q:'풍선 모형이 실제 우주와 다른 점을 두 가지 이상 찾아보자.',g:'은하 자체의 크기, 그리고 풍선의 안쪽과 바깥쪽에 해당하는 공간이 실제 우주에도 있는지 생각해 보자.'}],
+  inq:'멀리 있는 은하일수록 빠르게 멀어진다는 사실을 처음 밝혀낸 허블의 관측을 조사해 보자.',
+  quiz:[Q('팽창하는 우주의 시간을 거꾸로 돌리면?',['우주의 모든 물질이 한 점에 모인다','은하들이 서로 더 멀어진다','아무 변화가 없다'],'과거로 갈수록 우주는 작아진다. 대폭발 우주론은 우주가 한 점에서 시작되었다고 설명한다.'),Q('우리은하가 아닌 다른 은하에서 관측하면 어떻게 보일까?',['그곳에서도 다른 은하들이 멀어지는 것으로 보인다','다른 은하들이 다가오는 것으로 보인다','우리은하만 멀어지는 것으로 보인다'],'팽창에는 중심이 없으므로 어느 은하에서 보아도 같다.')]}},
+{id:12,zone:'별과 우주',title:'우주 탐사',badge:'탐사 개척자',sim:'explore',
+ core:'인류는 인공위성, 우주 탐사선, 우주 망원경 등으로 우주를 탐사하며, 이때 개발한 기술은 일상생활에도 쓰인다.',
+ warn:'시점이 지나도 틀리지 않도록 연도가 확정된 역사적 사실만 넣었다. 최근 탐사 사례를 더하려면 수업 시점에 맞춰 확인이 필요하다.',
+ gl:[['인공위성','artificial satellite','人造卫星'],['우주 탐사선','space probe','空间探测器'],['우주 망원경','space telescope','空间望远镜'],['우주 정거장','space station','空间站'],['우주 쓰레기','space debris','太空垃圾']],
+ L:{op:'장비 매칭',code:'X5DK',terms:[0,1,2],
+  cards:['지구 주위를 도는 장치를 인공위성이라고 한다. 날씨 예보와 길 찾기에 쓰인다.','다른 천체까지 날아가 조사하는 장치를 우주 탐사선이라고 한다.','우주에서 천체를 관측하는 장치를 우주 망원경이라고 한다.','우주 탐사를 위해 만든 기술은 생활에도 쓰인다. 내비게이션은 인공위성의 신호를 이용한다.'],
+  ms:[{t:'임무 카드 2장에 알맞은 장비를 연결하라.',ok:s=>s.npk>=2,sol:(s)=>{s.pk[0]=1;s.pk[1]=1}},{t:'남은 임무 카드에도 모두 장비를 연결하라.',ok:s=>s.npk===4,sol:(s)=>{s.pk[2]=1;s.pk[3]=1}}],
+  quiz:[Q('지구 주위를 돌며 날씨를 관측하는 장치는?',['인공위성','우주 탐사선','우주 망원경'],'인공위성은 지구 주위를 돌며 관측, 통신 등의 임무를 한다.'),Q('우주 탐사 기술이 생활에 쓰인 예는?',['인공위성 신호를 이용하는 내비게이션','나무로 만든 의자','종이로 만든 책'],'내비게이션은 인공위성이 보내는 신호로 위치를 알아낸다.')]},
+ M:{op:'탐사 연대기',code:'C9UH',
+  text:['1957년, 최초의 인공위성 스푸트니크 1호가 발사되며 우주 탐사가 시작되었다.','1969년, 아폴로 11호를 타고 간 사람이 처음으로 달에 발을 디뎠다.','1990년에 발사된 허블 우주 망원경은 지구 대기의 방해 없이 천체를 관측한다.','우리나라는 2022년에 달 궤도선 다누리를 발사하였다.','{인공위성|지구 주위를 도는 인공 장치}은 일기 예보, 통신, 위치 확인에 이용된다.','우주 탐사 과정에서 개발된 기술은 정수기, 내비게이션 등 일상생활에도 활용된다.'],
+  pre:Q('허블 우주 망원경과 다누리 중 먼저 발사된 것은?',['허블 우주 망원경','다누리','같은 해에 발사되었다'],'허블 우주 망원경은 1990년, 다누리는 2022년에 발사되었다.'),
+  ms:[{t:'가장 먼저 일어난 사건 2개를 차례로 골라라.',ok:s=>s.ord.length>=2,sol:A(11,'ev:1','ev:3')},{t:'나머지 사건도 차례로 골라 연대기를 완성하라.',ok:s=>s.ord.length===4,sol:A(11,'ev:0','ev:2')}],
+  quiz:[Q('최초의 인공위성은?',['스푸트니크 1호','아폴로 11호','허블 우주 망원경'],'1957년에 발사된 스푸트니크 1호가 최초의 인공위성이다.'),Q('망원경을 우주에 띄워 올리는 까닭은?',['지구 대기의 방해를 받지 않고 관측할 수 있기 때문이다','별에 훨씬 가까워지기 때문이다','우주에서는 망원경이 더 커지기 때문이다'],'지구의 대기는 천체에서 오는 빛을 흐리게 하거나 가로막는다.')]},
+ H:{op:'궤도의 그림자',code:'J4FS',
+  text:'인류는 1957년 스푸트니크 1호 발사 이후 인공위성, 우주 탐사선, 우주 망원경, 우주 정거장 등을 이용하여 우주를 탐사해 왔다. 인공위성은 지구 주위를 돌고, 우주 탐사선은 지구 궤도를 벗어나 달이나 행성 같은 다른 천체로 가서 탐사한다. 우주 탐사 과정에서 개발된 기술은 일기 예보, 위치 확인, 통신 등 일상생활에 널리 이용된다. 한편 수명이 다한 인공위성과 로켓의 잔해, 충돌로 생긴 파편 같은 우주 쓰레기가 지구 주위에 늘어나고 있다. 우주 쓰레기는 매우 빠른 속력으로 돌고 있어 작은 조각이라도 인공위성이나 우주인에게 큰 피해를 줄 수 있다.',
+  ms:[{t:'충돌 실험을 하고 조각 수의 변화를 확인하라.',ok:s=>s.hits>=1,sol:A(11,'hit')},{t:'한 번 더 충돌시켜, 충돌이 이어지면 어떻게 되는지 확인하라.',ok:s=>s.hits>=2,sol:A(11,'hit')}],
+  ext:[{q:'충돌로 생긴 파편이 다시 다른 충돌을 일으키면 어떤 일이 벌어질까?',g:'실험 장치에서 조각 수가 늘어나는 빠르기를 살펴보자. 충돌이 충돌을 부르면 궤도를 쓸 수 없게 될 수도 있다.',b:1},{q:'우주 쓰레기를 줄이거나 치우는 방법을 제안해 보자.',g:'새로 만들지 않는 방법(수명이 다한 위성을 대기권으로 떨어뜨리기)과 이미 있는 것을 치우는 방법으로 나누어 생각해 보자.'}],
+  inq:'우주 쓰레기 제거 기술(그물, 로봇 팔 등)을 조사하고 장단점을 비교해 보자.',
+  quiz:[Q('작은 우주 쓰레기 조각도 위험한 까닭은?',['매우 빠른 속력으로 돌고 있어 충돌하면 피해가 크기 때문이다','스스로 폭발하기 때문이다','강한 빛을 내기 때문이다'],'속력이 매우 빠르면 작은 조각도 큰 충격을 준다.'),Q('우주 탐사선이 인공위성과 다른 점은?',['지구 궤도를 벗어나 다른 천체로 간다','지구 주위만 돈다','땅 위에 세워 두고 사용한다'],'우주 탐사선은 달이나 행성 같은 다른 천체까지 가서 탐사한다.')]}}
+];
+TOPICS[7].L.ms[0].sol=A(SIMS.mag,'all');TOPICS[7].L.ms[1].sol=A(SIMS.mag,'sel:2','d:1');
+TOPICS[7].M.ms[0].sol=A(SIMS.mag,'sel:1','d:4');TOPICS[7].M.ms[1].sol=A(SIMS.mag,'sel:0','d:100');
+TOPICS[7].H.ms[0].sol=A(SIMS.mag,'sel:0','d:100');TOPICS[7].H.ms[1].sol=A(SIMS.mag,'sel:2','d:10');
+TOPICS[10].L.ms[1].sol=A(SIMS.expand,'v:2');TOPICS[10].M.ms[1].sol=A(SIMS.expand,'v:3');
+TOPICS[11].M.ms[0].sol=A(SIMS.explore,'ev:1','ev:3');TOPICS[11].M.ms[1].sol=A(SIMS.explore,'ev:0','ev:2');
+TOPICS[11].H.ms[0].sol=A(SIMS.explore,'hit');TOPICS[11].H.ms[1].sol=A(SIMS.explore,'hit');
+const CODES={};TOPICS.forEach(T=>['L','M','H'].forEach(lv=>CODES[T[lv].code]=[T,lv]));
+
+/* ===================== 저장 ===================== */
+const ST={done:{},teacher:false};
+try{Object.assign(ST,JSON.parse(localStorage.getItem('opsHQ')||'{}'))}catch(e){}
+const save=()=>{try{localStorage.setItem('opsHQ',JSON.stringify(ST))}catch(e){}};
+function setTeacher(on){ST.teacher=on;document.body.classList.toggle('teacher',on);const b=$('#tSwitch');if(b)b.setAttribute('aria-pressed',on);save()}
+
+/* ===================== 실험 장치 실행기 ===================== */
+function runSim(host,T,lv,ms,onDone,onStep){
+ const sim=SIMS[T.sim],s=sim.init(lv);let mi=0;
+ const apply=p=>{if(p)Object.assign(s,clone(p))};
+ apply(ms[0].set);sim.calc(s,lv);
+ host.innerHTML=`<ol class="mlist"></ol><div class="simview"></div><div class="ctrl"></div><div class="judge"><button type="button" class="btn" data-judge>판정 요청</button><span class="jmsg" aria-live="polite"></span></div>`;
+ const view=$('.simview',host),ctrl=$('.ctrl',host),ml=$('.mlist',host),jm=$('.jmsg',host);
+ const drawM=()=>ml.innerHTML=ms.map((m,i)=>`<li class="${i<mi?'ok':i===mi?'cur':''}">임무 ${i+1}. ${m.t}</li>`).join('');
+ const draw=()=>view.innerHTML=sim.draw(s,lv);
+ const drawC=()=>ctrl.innerHTML=sim.ctrl(lv,s).map(c=>c.tgs?`<label>${c.label}<div class="seg">${c.tgs.map(([k,l])=>`<button type="button" class="tg ${s[k]?'on':''}" data-tg="${k}">${l}</button>`).join('')}</div></label>`:c.opts?`<label>${c.label}<div class="seg">${c.opts.map(([v,l])=>`<button type="button" class="${String(s[c.k])===String(v)?'on':''}" data-seg="${c.k}" data-v="${v}">${l}</button>`).join('')}</div></label>`:`<label>${c.label}<input type="range" data-k="${c.k}" min="${c.min}" max="${c.max}" step="${c.step}" value="${s[c.k]}"></label>`).join('');
+ const upd=()=>{sim.calc(s,lv);draw()};
+ drawM();draw();drawC();
+ host.addEventListener('input',e=>{const k=e.target.dataset.k;if(k){s[k]=+e.target.value;jm.textContent='';upd()}});
+ host.addEventListener('click',e=>{const t=e.target;let b;
+  if(t.closest('[data-judge]')){if(mi>=ms.length)return;sim.calc(s,lv);
+   if(ms[mi].ok(s)){mi++;onStep&&onStep(mi);if(mi<ms.length){apply(ms[mi].set);upd();drawC();jm.className='jmsg good';jm.textContent='임무 성공. 다음 임무가 도착했다.'}else{jm.className='jmsg good';jm.textContent='모든 임무를 완수했다.';t.closest('[data-judge]').disabled=true;onDone()}drawM()}
+   else{jm.className='jmsg bad';jm.textContent='아직 목표에 닿지 않았다. 장치를 조절해 다시 도전하라.';view.classList.remove('shake');void view.offsetWidth;view.classList.add('shake')}
+   return}
+  if(b=t.closest('[data-seg]')){const v=b.dataset.v;s[b.dataset.seg]=isNaN(+v)?v:+v;$$(`[data-seg="${b.dataset.seg}"]`,host).forEach(x=>x.classList.toggle('on',x===b));jm.textContent='';upd();return}
+  if(b=t.closest('[data-tg]')){s[b.dataset.tg]=s[b.dataset.tg]?0:1;b.classList.toggle('on',!!s[b.dataset.tg]);jm.textContent='';upd();return}
+  if(b=t.closest('[data-act]')){sim.act(s,b.dataset.act,lv);jm.textContent='';upd();return}
+  if(b=t.closest('svg[data-tap]')){const r=b.getBoundingClientRect();sim.tap(s,(e.clientX-r.left)/r.width*480,(e.clientY-r.top)/r.height*280);jm.textContent='';upd()}});
+}
+
+/* ===================== 확인 문제 ===================== */
+const shuffle=a=>{a=a.map((v,i)=>[v,i]);for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+function runQuiz(host,items,lv,onDone){let qi=0;
+ const guard=lv==='L'?`<div class="guard">관문 수호자 ${items.map((_,i)=>`<i data-g="${i}"></i>`).join('')}</div>`:'';
+ host.innerHTML=guard+`<div class="qwrap"></div>`;const wrap=$('.qwrap',host);
+ const show=()=>{const it=items[qi],os=shuffle(it.o);
+  wrap.innerHTML=`<div class="qz"><div class="eyebrow">${lv==='L'?'보스 문제':'최종 관문'} ${qi+1} / ${items.length}</div><h3>${it.q}</h3><div class="opts">${os.map(([t,i])=>`<button type="button" data-i="${i}">${t}</button>`).join('')}</div><div class="exbox"></div></div>`;
+  wrap.onclick=e=>{const b=e.target.closest('[data-i]');if(!b||wrap.dataset.lock)return;
+   if(b.dataset.i==='0'){wrap.dataset.lock=1;b.classList.add('right');$$('.opts button',wrap).forEach(x=>x.disabled=true);const g=$(`[data-g="${qi}"]`,host);g&&g.classList.add('off');
+    $('.exbox',wrap).innerHTML=`<div class="ex"><b>정답.</b> ${it.ex}</div><div class="row" style="margin-top:10px"><button type="button" class="btn" data-next>${qi<items.length-1?'다음 문제':'작전 완료 보고'}</button></div>`;
+    $('[data-next]',wrap).onclick=ev=>{ev.stopPropagation();delete wrap.dataset.lock;qi++;if(qi<items.length)show();else onDone()}}
+   else{b.classList.add('wrong');b.disabled=true;$('.exbox',wrap).innerHTML=`<div class="ex">다시 생각해 보라. 작전 브리핑의 핵심 개념을 떠올리면 된다.</div>`}}};
+ show();
+}
+
+/* ===================== 화면: 본부(홈) ===================== */
+const app=typeof document!=='undefined'?$('#app'):null;
+function tcolor(T){const c=COLORS[(T.id-1)%4];return `--tc:${c[0]};--tcbg:${c[1]}`}
+function renderHome(){
+ window.scrollTo(0,0);
+ const n=Object.keys(ST.done).length;
+ app.innerHTML=`
+ <section class="card hero">
+  <div><div class="eyebrow">빛과 별 탐사대 · 중2 과학 · 빛 / 별과 우주</div><h1>탐사대 작전 본부</h1>
+   <p>본부에서 받은 <b>작전 코드</b>를 입력하면 나만의 비밀 지령이 해독된다. 지령을 완수하고 개념 도감을 채워라.</p>
+   <p class="dim sonly">체험용 작전 코드는 오른쪽 위 '교사 해설'을 켜면 볼 수 있습니다.</p></div>
+  <div class="codebox"><label for="code" style="font-weight:700;display:block;margin-bottom:8px">작전 코드 4자리</label>
+   <input id="code" maxlength="4" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="····">
+   <div class="err" id="codeErr" aria-live="polite"></div><button type="button" class="btn" id="codeGo">지령 해독</button></div>
+ </section>
+ <section class="card"><h2>개념 도감 <span class="dim">${n} / 12</span></h2>
+  <div class="dex">${TOPICS.map(T=>`<div class="${ST.done[T.id]?'on':''}" style="--c:${COLORS[(T.id-1)%4][0]}">${ST.done[T.id]?`<i>${T.badge}</i><b>${T.title}</b>`:`<b>미확인 기록</b>${T.zone} 구역`}</div>`).join('')}</div>
+  ${n?`<div class="row" style="margin-top:12px"><button type="button" class="btn ghost small" id="reset">도감 기록 지우기</button></div>`:''}
+ </section>
+ <section class="tonly" id="tpanel"></section>`;
+ const go=()=>{const v=$('#code').value.trim().toUpperCase(),hit=CODES[v];if(!hit){$('#codeErr').textContent='등록되지 않은 작전 코드다. 다시 확인하라.';return}decode(hit[0],hit[1])};
+ $('#codeGo').onclick=go;$('#code').onkeydown=e=>{if(e.key==='Enter')go()};
+ const r=$('#reset');if(r)r.onclick=()=>{ST.done={};save();renderHome()};
+ renderTeacher('codes');
+}
+function decode(T,lv){
+ window.scrollTo(0,0);
+ const name=`작전명 '${T[lv].op}'`,pool='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+ app.innerHTML=`<section class="card" style="${tcolor(T)}"><div class="eyebrow" style="text-align:center">비밀 지령 해독 중</div><div class="decode" id="dec"></div></section>`;
+ let f=0;const N=14,el=$('#dec');
+ const tick=()=>{f++;const k=Math.floor(name.length*f/N);el.textContent=name.slice(0,k)+[...name.slice(k)].map(c=>c===' '?' ':pool[Math.floor(Math.random()*pool.length)]).join('');
+  if(f<N)setTimeout(tick,70);else setTimeout(()=>renderQuest(T,lv),450)};
+ tick();
+}
+
+/* ===================== 화면: 퀘스트 ===================== */
+function termChip(T,i){return `<button type="button" class="chip" data-term="${i}">${T.gl[i][0]}</button>`}
+function openTerms(T,only){const g=only!=null?[T.gl[only]]:T.gl,d=$('#dlg');
+ d.innerHTML=`<h2>용어 사전</h2><div class="tw"><table><tr><th>한국어</th><th>English</th><th>中文</th></tr>${g.map(x=>`<tr><td><b>${x[0]}</b></td><td>${x[1]}</td><td lang="zh-CN">${x[2]}</td></tr>`).join('')}</table></div><div class="row" style="margin-top:14px;justify-content:flex-end"><button type="button" class="btn" id="dlgX">닫기</button></div>`;
+ $('#dlgX').onclick=()=>d.close();d.showModal()}
+function renderQuest(T,lv,step=0){
+ window.scrollTo(0,0);
+ const D=T[lv],L=LV[lv];
+ const head=`<div class="eyebrow">${T.zone} 구역 · ${T.title}</div><h1>작전명 '${D.op}'</h1>
+  <div class="tnote"><b>교사 해설</b> · 이 퀘스트는 <span class="lv">${L.n} 수준</span> (${L.who})입니다. 설계 기준: ${L.rule}. 학생 화면에는 수준 표시가 없고 작전명만 보입니다. <br><b>오개념 주의</b> · ${T.warn}</div>
+  <div class="steps">${[0,1,2,3].map(i=>`<span class="${i<=step?'on':''}"></span>`).join('')}</div>`;
+ const core=`<div class="core"><small>작전 브리핑 · 핵심 개념</small>${T.core}</div>`;
+ let body='';
+ if(step===0){
+  body=core+tnote('핵심 개념 문장은 세 수준 모두 글자 하나 다르지 않게 같습니다. 난이도는 낮추되 개념의 정확성은 지키기 위한 장치입니다.');
+  if(lv==='L')body+=`<div id="deck"></div>`+tnote(`지령 카드 ${D.cards.length}장 · 한 장에 한 문장, 한 개념만 담았습니다. 읽을 양은 가장 적고 넘기는 재미를 더했습니다.`);
+  else if(lv==='M')body+=`<div class="card"><ol class="passage">${D.text.map(t=>`<li>${gloss(t)}</li>`).join('')}</ol></div>`+tnote('문장을 짧게 나누고, 핵심 용어 바로 뒤에 괄호 풀이를 붙였습니다.');
+  else body+=`<div class="report">${D.text}</div>`+tnote('원문 지문을 그대로 제시합니다. 교과서 문장이 아니라 새로 쓴 글입니다.');
+  body+=`<div class="row" style="margin-top:16px"><button type="button" class="btn" id="next" ${lv==='L'?'disabled':''}>탐사 활동 시작</button>${lv!=='L'?`<button type="button" class="btn ghost" id="terms">용어 사전</button>`:''}</div>`;
+ }else if(step===1){
+  body=`<div class="card"><h2>탐사 활동</h2>`;
+  if(lv==='L')body+=`<div class="items"><span>수집한 용어 아이템</span><span id="bag">${D.terms.map(()=>`<span class="chip empty">???</span>`).join(' ')}</span></div>`+tnote(`핵심 용어는 ${D.terms.length}개만 '수집 아이템'으로 제시합니다. 누르면 한국어·영어·중국어 대역어가 나옵니다.`);
+  if(lv==='M')body+=`<div id="pre"></div>`+tnote('먼저 결과를 예측하게 한 뒤 실험 장치로 확인합니다. 예측은 채점하지 않습니다.');
+  body+=`<div id="sim"></div>`+tnote(lv==='L'?'조작 중심 활동입니다. 글을 읽는 대신 장치를 직접 움직여 개념을 확인합니다. 세 수준이 같은 장치를 쓰므로 한 학급이 같은 주제를 탐사한다는 소속감이 유지됩니다.':lv==='M'?'같은 실험 장치에 수치 읽기와 조건 바꾸기를 더했습니다.':'같은 실험 장치를 확장 질문의 탐구 도구로 씁니다.')+`</div>`;
+  if(lv==='H')body+=`<div class="card"><h2>미해결 사건 파일</h2><p class="dim">정답을 고르는 문제가 아니다. 스스로 생각을 정리한 뒤 길잡이를 열어 보라.</p>${D.ext.map(x=>`<details class="ext"><summary>${x.q}${x.b?'<span class="tag tonly">교육과정 밖 맛보기</span>':''}</summary><p><b>길잡이</b> · ${x.g}</p></details>`).join('')}
+   <h3 style="margin-top:14px">자유 탐사 제안</h3><p>${D.inq}</p>${tnote('생각을 확장하는 질문 2개와 탐구 주제 1개입니다.'+(D.ext.some(x=>x.b)?' 일부 질문은 <b>교육과정 밖 맛보기</b>입니다: '+D.ext.filter(x=>x.b).map(x=>'"'+x.q+'"').join(', '):''))}</div>`;
+  body+=`<div class="row"><button type="button" class="btn" id="next" disabled>최종 관문으로</button>${lv!=='L'?`<button type="button" class="btn ghost" id="terms">용어 사전</button>`:''}</div>`;
+ }else if(step===2){
+  body=core+`<div id="quiz"></div>`+tnote('확인 문제는 세 수준 모두 2개입니다. 틀려도 감점 없이 다시 고를 수 있습니다.'+(lv==='L'?' 하 수준은 \'보스 문제\'와 수호자 게이지로 연출했습니다.':''));
+ }else{
+  body=`<section class="card" style="text-align:center"><div class="badge"><span>${T.badge}</span></div><div class="eyebrow">작전 완료 · 뱃지 획득</div><h2>'${T.badge}' 뱃지를 얻었다</h2>
+   <p>개념 도감에 <b>${T.title}</b> 기록이 등록되었다.</p><div class="core" style="text-align:left">${'<small>도감 기록</small>'+T.core}</div>
+   ${tnote('뱃지와 도감 기록은 세 수준이 완전히 같습니다. 보상으로 수준이 드러나지 않습니다.')}
+   <div class="row" style="justify-content:center"><button type="button" class="btn" id="home">본부로 돌아가기</button></div>
+   <div class="tonly" style="margin-top:14px"><div class="row" style="justify-content:center">${['L','M','H'].filter(x=>x!==lv).map(x=>`<button type="button" class="btn ghost small" data-open="${T.id}:${x}">같은 주제의 ${LV[x].n} 수준 '${T[x].op}' 보기</button>`).join('')}</div></div></section>`;
+ }
+ app.innerHTML=`<div style="${tcolor(T)}">${step<3?head:''}${body}</div>`;
+ const nx=$('#next'),tm=$('#terms');if(tm)tm.onclick=()=>openTerms(T);
+ if(step===0){
+  if(lv==='L'){let ci=0;const dk=$('#deck');const show=()=>{dk.innerHTML=`<div class="deck"><small>지령 카드 ${ci+1} / ${D.cards.length}</small>${D.cards[ci]}</div><div class="pips">${D.cards.map((_,i)=>`<i class="${i<=ci?'on':''}"></i>`).join('')}</div><div class="row" style="justify-content:center">${ci>0?'<button type="button" class="btn ghost small" id="cp">이전 카드</button>':''}${ci<D.cards.length-1?'<button type="button" class="btn small" id="cn">다음 카드</button>':''}</div>`;
+    const a=$('#cn'),b=$('#cp');if(a)a.onclick=()=>{ci++;show()};if(b)b.onclick=()=>{ci--;show()};if(ci===D.cards.length-1)nx.disabled=false};show()}
+  nx.onclick=()=>renderQuest(T,lv,1);
+ }else if(step===1){
+  let preDone=lv!=='M',simDone=false,picked=null;
+  const fin=()=>{if(simDone&&preDone)nx.disabled=false;if(simDone&&lv==='M'&&picked!=null){$('#pre .exbox').innerHTML=`<div class="ex"><b>${picked===0?'예측이 맞았다.':'예측과 달랐다.'}</b> ${D.pre.ex}</div>`}};
+  if(lv==='M'){const p=$('#pre'),os=shuffle(D.pre.o);p.innerHTML=`<div class="qz"><div class="eyebrow">먼저 예측하라</div><h3>${D.pre.q}</h3><div class="opts">${os.map(([t,i])=>`<button type="button" data-i="${i}">${t}</button>`).join('')}</div><div class="exbox"></div></div>`;
+   p.onclick=e=>{const b=e.target.closest('[data-i]');if(!b||preDone)return;preDone=true;picked=+b.dataset.i;b.style.borderColor='var(--tc)';b.style.fontWeight='700';$$('.opts button',p).forEach(x=>x.disabled=true);$('.exbox',p).innerHTML=`<div class="ex">예측을 기록했다. 아래 실험 장치로 직접 확인하라.</div>`;fin()}}
+  runSim($('#sim'),T,lv,D.ms,()=>{simDone=true;if(lv==='L')fillBag(D.terms.length);toast('모든 임무 완수');fin()},mi=>{if(lv==='L')fillBag(Math.min(mi,D.terms.length))});
+  function fillBag(n){const bag=$('#bag');if(!bag)return;const had=$$('.chip:not(.empty)',bag).length;bag.innerHTML=D.terms.map((t,i)=>i<n?termChip(T,t):`<span class="chip empty">???</span>`).join(' ');if(n>had)toast(`용어 아이템 획득: ${T.gl[D.terms[n-1]][0]}`)}
+  const its=$('.items',app);if(its)its.onclick=e=>{const c=e.target.closest('[data-term]');if(c)openTerms(T,+c.dataset.term)};
+  nx.onclick=()=>renderQuest(T,lv,2);
+ }else if(step===2){
+  runQuiz($('#quiz'),D.quiz,lv,()=>{ST.done[T.id]=1;save();renderQuest(T,lv,3)});
+ }else{
+  $('#home').onclick=renderHome;
+  $$('[data-open]',app).forEach(b=>b.onclick=()=>{const[i,x]=b.dataset.open.split(':');renderQuest(TOPICS[i-1],x)});
+ }
+}
+
+/* ===================== 화면: 교사 해설 패널 ===================== */
+function partsPrompt(T){return `[Persona] 당신은 학력 차이가 큰 중학교 2학년 교실을 맡은 과학 교사입니다.
+
+[Act] 첨부한 지문을 상/중/하 세 가지 난이도 버전으로 바꿔 주세요. 어느 버전에서도 '${T.core}'라는 핵심 개념은 한 글자도 바꾸지 말고 그대로 지켜 주시기 바랍니다. 각 버전에는 수준이 드러나지 않도록 서로 다른 '작전명'을 붙여 주세요.
+
+[Recipient] 자료를 읽을 학생은 세 그룹입니다. '상'은 심화 학습을 원하는 학생, '중'은 평균 수준의 학생, '하'는 기초학력 지원이 필요한 학생과 다문화 학생입니다. 학생이 자신의 수준이 다르다고 느끼지 않도록, 세 버전 모두 탐사대의 비밀 지령(퀘스트) 형식으로 써 주세요.
+
+[Theme] 지문은 중학교 2학년 과학 '${T.title}'을 다룹니다. 학생들이 일상의 예시와 연결해 개념을 이해하도록 돕고 싶습니다.
+
+[Structure] 세 버전을 표로 나란히 보여 주세요.
+- 하: 한 문장에 한 개념, 일상 예시, 핵심 용어 3개 이내, 확인 문제 2개
+- 중: 문장을 짧게 나누고 핵심 용어에 괄호 풀이, 확인 문제 2개
+- 상: 원문 유지, 생각을 확장하는 질문 2개, 탐구 주제 제안, 확인 문제 2개
+
+[후속 프롬프트] 다음 용어를 중학생도 이해할 수 있도록 일상 예시와 함께 쉽게 풀어 주세요: ${T.gl.map(g=>g[0]).join(', ')}. 비유가 개념을 왜곡하는 부분이 있다면 그 한계를 한 줄로 밝혀 주시기 바랍니다. 다문화 학생을 위해 용어집에 영어와 중국어 대역어도 함께 넣어 주세요.`}
+function renderTeacher(tab,tid=1){
+ const p=$('#tpanel');if(!p)return;const T=TOPICS[tid-1];
+ const tabs=[['codes','작전 코드표'],['cmp','수준 비교'],['prompt','프롬프트'],['gloss','용어집'],['guide','설계 안내']];
+ const pick=`<div class="seg" style="margin-bottom:12px">${TOPICS.map(t=>`<button type="button" class="${t.id===tid?'on':''}" data-tid="${t.id}" style="${t.id===tid?'background:var(--blue);border-color:var(--blue)':''}">${t.id}. ${t.title}</button>`).join('')}</div>`;
+ let h='';
+ if(tab==='codes')h=`<p class="dim">학생에게는 작전 코드만 나눠 줍니다. 코드에는 수준을 알 수 있는 규칙이 없습니다. 칸을 누르면 해당 퀘스트가 열립니다.</p><div class="tw"><table><tr><th>주제</th><th>하 수준</th><th>중 수준</th><th>상 수준</th></tr>${TOPICS.map(t=>`<tr><td><b>${t.id}. ${t.title}</b><br><span class="dim">${t.zone}</span></td>${['L','M','H'].map(x=>`<td><button type="button" class="codebtn" data-open="${t.id}:${x}"><b>${t[x].code}</b><br>${t[x].op}</button></td>`).join('')}</tr>`).join('')}</table></div>`;
+ else if(tab==='cmp')h=pick+`<div class="core" style="--tc:var(--blue);--tcbg:#e8f0fe"><small>세 수준 공통 핵심 개념</small>${T.core}</div><p class="tnote" style="display:block"><b>오개념 주의</b> · ${T.warn}</p><div class="cmp">${['L','M','H'].map(x=>{const D=T[x];return `<div><span class="lv">${LV[x].n}</span> <b>'${D.op}'</b> <span class="dim">${D.code}</span><p class="dim" style="margin:6px 0 0">${LV[x].rule}</p>
+   <h4>지령 본문</h4>${x==='L'?`<ol>${D.cards.map(c=>`<li>${c}</li>`).join('')}</ol>`:x==='M'?`<ol>${D.text.map(c=>`<li>${gloss(c)}</li>`).join('')}</ol>`:`<p>${D.text}</p>`}
+   ${x==='L'?`<h4>용어 아이템</h4><p>${D.terms.map(i=>T.gl[i][0]).join(', ')}</p>`:''}${x==='M'?`<h4>예측 질문</h4><p>${D.pre.q}</p>`:''}
+   <h4>탐사 활동 임무</h4><ol>${D.ms.map(m=>`<li>${m.t}</li>`).join('')}</ol>
+   ${x==='H'?`<h4>확장 질문</h4><ol>${D.ext.map(e=>`<li>${e.q}${e.b?'<span class="tag">교육과정 밖 맛보기</span>':''}</li>`).join('')}</ol><h4>탐구 주제</h4><p>${D.inq}</p>`:''}
+   <h4>확인 문제</h4><ol>${D.quiz.map(q=>`<li>${q.q}<br><span class="dim">정답: ${q.o[0]}</span></li>`).join('')}</ol>
+   <button type="button" class="btn ghost small" style="margin-top:10px" data-open="${T.id}:${x}">학생 화면으로 체험</button></div>`}).join('')}</div>`;
+ else if(tab==='prompt')h=pick+`<p class="dim">연수에서 다룬 P.A.R.T.S. 틀(Persona · Act · Recipient · Theme · Structure)에 맞춘 예시 프롬프트입니다. 지문을 첨부하고 주제만 바꾸면 다른 교과에도 쓸 수 있습니다. 생성 결과는 초안이므로 교과서와 대조하여 검증해야 합니다.</p><pre class="prompt" id="pp">${partsPrompt(T)}</pre><button type="button" class="btn small" id="cp">프롬프트 복사</button>`;
+ else if(tab==='gloss')h=`<p class="dim">하 수준 퀘스트에서는 주제마다 이 가운데 3개 이내만 '수집 아이템'으로 나옵니다. 중국어는 간체자입니다.</p><div class="tw"><table><tr><th>주제</th><th>한국어</th><th>English</th><th>中文</th></tr>${TOPICS.map(t=>t.gl.map((g,i)=>`<tr>${i===0?`<td rowspan="${t.gl.length}"><b>${t.id}. ${t.title}</b></td>`:''}<td>${g[0]}</td><td>${g[1]}</td><td lang="zh-CN">${g[2]}</td></tr>`).join('')).join('')}</table></div>`;
+ else h=`<h3>이 자료의 설계 원칙</h3><ul>
+   <li><b>수준을 숨긴다.</b> 36개 퀘스트의 작전명이 모두 다르고, 번호·별 개수·색으로 서열을 나타내지 않습니다. 색은 수준이 아니라 주제에 붙습니다. 보상(뱃지, 도감)은 세 수준이 같습니다.</li>
+   <li><b>'비밀 지령'으로 배정한다.</b> 학생이 고르지 않고 교사가 작전 코드를 나눠 줍니다. 비밀 지령은 사람마다 다른 것이 자연스러우므로 비교가 줄어듭니다.</li>
+   <li><b>하 수준이 더 재미있어 보이게 한다.</b> 읽을 양은 가장 적고, 직접 조작하는 임무와 수집 요소, 보스 문제 연출은 가장 많습니다.</li>
+   <li><b>핵심 개념은 지킨다.</b> 핵심 개념 문장은 세 수준에서 똑같습니다. 쉬운 버전일수록 개념 오류가 생기기 쉬워, 주제마다 '오개념 주의'를 적어 두었습니다.</li></ul>
+  <h3>수준별 기준</h3><div class="tw"><table><tr><th>수준</th><th>대상</th><th>기준</th></tr>${['H','M','L'].map(x=>`<tr><td><span class="lv">${LV[x].n}</span></td><td>${LV[x].who}</td><td>${LV[x].rule}</td></tr>`).join('')}</table></div>
+  <h3 style="margin-top:16px">사용 전 확인할 것</h3><ul>
+   <li>지문과 문제는 AI로 초안을 만들고 교사가 검토하는 방식으로 제작했습니다. 교과서 문장은 쓰지 않았습니다. 사용하는 교과서의 용어·수치와 대조해 주세요. 특히 태양계의 위치(약 3만 광년), 우리은하의 지름(약 10만 광년), 별의 색 구분과 온도 단위, 1등급 차이(약 2.5배), pc 단위, 우주의 나이(약 138억 년)를 확인해 주세요.</li>
+   <li>상 수준의 일부 확장 질문은 교육과정 밖 맛보기이며, '수준 비교' 탭에 표시되어 있습니다.</li>
+   <li>중국어 대역어는 원어민이나 이중언어 강사의 확인을 권합니다.</li>
+   <li>이 자료는 교사 공유·시연용이라 '교사 해설' 스위치가 화면에 보입니다. 실제 수업에 쓰려면 스위치를 숨겨야 합니다.</li>
+   <li>학생 정보는 수집하지 않습니다. 도감 기록은 이 기기의 브라우저에만 저장됩니다.</li></ul>`;
+ p.innerHTML=`<div class="card"><div class="eyebrow" style="color:var(--blue)">교사 해설 모드</div><h2>수준별 설계 들여다보기</h2><div class="tabs">${tabs.map(([k,l])=>`<button type="button" class="${k===tab?'on':''}" data-tab="${k}">${l}</button>`).join('')}</div>${h}</div>`;
+ p.onclick=e=>{let b;
+  if(b=e.target.closest('[data-tab]'))renderTeacher(b.dataset.tab,tid);
+  else if(b=e.target.closest('[data-tid]'))renderTeacher(tab,+b.dataset.tid);
+  else if(b=e.target.closest('[data-open]')){const[i,x]=b.dataset.open.split(':');renderQuest(TOPICS[i-1],x)}
+  else if(e.target.id==='cp'){const t=$('#pp').textContent;(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>toast('프롬프트를 복사했습니다')).catch(()=>{const r=document.createRange();r.selectNodeContents($('#pp'));const s=getSelection();s.removeAllRanges();s.addRange(r);toast('선택된 내용을 직접 복사해 주세요')})}};
+}
+
+/* ===================== 시작 ===================== */
+if(typeof document!=='undefined'&&app){
+ $('#tSwitch').onclick=()=>setTeacher(!ST.teacher);
+ $('#goHome').onclick=renderHome;
+ setTeacher(!!ST.teacher);
+ renderHome();
+}
+</script>
+</body>
+</html>
